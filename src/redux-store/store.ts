@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { createWrapper } from 'next-redux-wrapper'
-import counterReducer from './reducers/counter'
+import svgList from "./reducers/svgList"
 
 export const store = configureStore({
   reducer: {
-      counter: counterReducer,
+      svgList: svgList
   },
 })
 
