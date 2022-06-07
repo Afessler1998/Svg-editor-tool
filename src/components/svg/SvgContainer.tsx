@@ -3,7 +3,8 @@ import { RootState } from '../../redux-store/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { addElement } from '../../redux-store/reducers/svgList';
 import style from "../../styles/svg.module.css";
-import { makeRect, getRectSvg } from '../../makeSvgElements/makeRect';
+import { makeEllipse, getEllipseSvg } from '../../makeSvgElements/makeEllipse';
+import { colorPallete } from "../../colorPallete";
 
 const SvgContainer = () => {
     const list = useSelector((state: RootState) => state.svgList.list);
@@ -16,9 +17,9 @@ const SvgContainer = () => {
         const mouseX = Math.round(e.clientX - containerBounds.left);
         const mouseY = Math.round(e.clientY - containerBounds.top);
 
-        const rectangle = makeRect(100, 100, mouseX, mouseY, "#89CFF0", `${mouseX}${mouseY}`);
+        const ellipse = makeEllipse(100, 50, mouseX, mouseY, colorPallete.babyBlue, `${mouseX}${mouseY}`);
 
-        dispatch(addElement(getRectSvg(rectangle)));
+        dispatch(addElement(getEllipseSvg(ellipse)));
     }
 
     return (
