@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { createWrapper } from 'next-redux-wrapper'
 import svgList from "./reducers/svgList"
+import selectTool from './reducers/selectTool'
 
 export const store = configureStore({
   reducer: {
-      svgList: svgList
+      svgList: svgList,
+      selectTool: selectTool
   },
 })
 

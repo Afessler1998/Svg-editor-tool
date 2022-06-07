@@ -1,4 +1,5 @@
 export interface Rect{
+    type: string,
     width: number,
     height: number,
     x: number,
@@ -9,6 +10,7 @@ export interface Rect{
 
 export function makeRect(width: number, height: number, x: number, y: number, fill: string, id: string): Rect {
     return {
+        type: "rect",
         width,
         height,
         x,

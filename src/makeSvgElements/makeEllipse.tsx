@@ -1,4 +1,5 @@
 export interface Ellipse{
+    type: string,
     rx: number,
     ry: number,
     cx: number,
@@ -9,6 +10,7 @@ export interface Ellipse{
 
 export function makeEllipse(rx: number, ry: number, cx: number, cy: number, fill: string, id: string): Ellipse {
     return {
+        type: "ellipse",
         rx,
         ry,
         cx,
