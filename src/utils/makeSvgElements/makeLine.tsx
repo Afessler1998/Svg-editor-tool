@@ -8,7 +8,7 @@ export interface Line{
     id: string,
 }
 
-export function makeRect(x1: number, y1: number, x2: number, y2: number, stroke: string, id: string): Line {
+export function makeLine(x1: number, y1: number, x2: number, y2: number, stroke: string, id: string): Line {
     return {
         type: "line",
         x1,
@@ -21,6 +21,6 @@ export function makeRect(x1: number, y1: number, x2: number, y2: number, stroke:
 }
 
 export function getLineSvg(line: Line) {
-    const { x1, y1, x2, y2, stroke } = line;
-    return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} onClick={(e) => e.stopPropagation()} />
+    const { x1, y1, x2, y2, stroke, id } = line;
+    return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} key={id} />
 }

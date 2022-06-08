@@ -15,9 +15,12 @@ export const svgListSlice = createSlice({
     addElement(state, action: PayloadAction<any>) {
         state.list = [...state.list, action.payload];
     },
+    removeElement(state, action: PayloadAction<string>) {
+        state.list = state.list.filter((element) => element.id !== action.payload);
+    },
   },
 })
 
-export const { addElement } = svgListSlice.actions
+export const { addElement, removeElement } = svgListSlice.actions
 
 export default svgListSlice.reducer

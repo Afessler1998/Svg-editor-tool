@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addElement } from "../redux-store/reducers/svgList";
-import { makeRect, getRectSvg } from "../makeSvgElements/makeRect";
-import { makeEllipse, getEllipseSvg } from "../makeSvgElements/makeEllipse";
+import { makeRect } from "./makeSvgElements/makeRect";
+import { makeEllipse } from "./makeSvgElements/makeEllipse";
 import { colorPallete } from "../colorPallete";
 
 export default function getSvgEventHandlers(selectedTool: string) {
@@ -10,7 +10,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
     const dispatch = useDispatch();
 
     switch(selectedTool) {
-        case "Rect":
+        case "rect":
             return {
                 handleClick: (e: React.MouseEvent) => {
                     const target = e.target as SVGElement;
@@ -21,13 +21,10 @@ export default function getSvgEventHandlers(selectedTool: string) {
 
                     const rect = makeRect(50, 50, mouseX, mouseY, colorPallete.babyBlue, `${mouseX}${mouseY}`);
 
-                    dispatch(addElement(getRectSvg(rect)));
+                    dispatch(addElement(rect));
                 },
-                handleMouseover: () => {
-                    return;
-                }
             };
-        case "Ellipse":
+        case "ellipse":
             return {
                 handleClick: (e: React.MouseEvent) => {
                     const target = e.target as SVGElement;
@@ -38,27 +35,18 @@ export default function getSvgEventHandlers(selectedTool: string) {
 
                     const ellipse = makeEllipse(50, 50, mouseX, mouseY, colorPallete.babyBlue, `${mouseX}${mouseY}`);
 
-                    dispatch(addElement(getEllipseSvg(ellipse)));
+                    dispatch(addElement(ellipse));
                 },
-                handleMouseover: () => {
-                    return;
-                }
             };
-        case "Polygon":
+        case "polygon":
             return {
                 handleClick: () => {
                     return;
                 },
-                handleMouseover: () => {
-                    return;
-                }
             };
-        case "Line":
+        case "line":
             return {
                 handleClick: () => {
-                    return;
-                },
-                handleMouseover: () => {
                     return;
                 },
             };
