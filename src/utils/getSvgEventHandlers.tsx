@@ -6,8 +6,6 @@ import { makeRect } from "./makeSvgElements/makeRect";
 import { makeEllipse } from "./makeSvgElements/makeEllipse";
 import { makeLine } from "./makeSvgElements/makeLine";
 import { colorPallete } from "../colorPallete";
-import largerOfTwoNums from "./math/largerOfTwoNums";
-import calculateHypotenuse from "./math/calculateHypotenuse";
 
 
 export default function getSvgEventHandlers(selectedTool: string) {
@@ -40,9 +38,16 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                    const length = largerOfTwoNums(Math.abs(mouseY - y), Math.abs(mouseX - x));
+                    const width = mouseX - x;
+                    const height = mouseY - y;
 
-                    const rect = makeRect(length, length, x, y, colorPallete.babyBlue, `${x}${y}`);
+                    let xPosition = x;
+                    let yPosition = y;
+
+                    if (width < 0) xPosition = mouseX;
+                    if (height < 0) yPosition = mouseY;
+
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(rect));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -52,10 +57,17 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
                     
-                    const length = largerOfTwoNums(Math.abs(mouseY - y), Math.abs(mouseX - x));
+                    const width = mouseX - x;
+                    const height = mouseY - y;
+
+                    let xPosition = x;
+                    let yPosition = y;
+
+                    if (width < 0) xPosition = mouseX;
+                    if (height < 0) yPosition = mouseY;
 
                     dispatch(removeElement(`${x}${y}`));
-                    const rect = makeRect(length, length, x, y, colorPallete.babyBlue, `${x}${y}`);
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(rect));
 
                     dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
@@ -82,9 +94,10 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                    const radius = calculateHypotenuse(Math.abs(mouseY - y), Math.abs(mouseX - x));
+                    const width = Math.abs(mouseX - x);
+                    const height = Math.abs(mouseY - y);
 
-                    const ellipse = makeEllipse(radius, radius, x, y, colorPallete.babyBlue, `${x}${y}`);
+                    const ellipse = makeEllipse(width, height, x, y, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(ellipse));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -94,10 +107,11 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                    const radius = calculateHypotenuse(Math.abs(mouseY - y), Math.abs(mouseX - x));
+                    const width = Math.abs(mouseX - x);
+                    const height = Math.abs(mouseY - y);
 
                     dispatch(removeElement(`${x}${y}`));
-                    const ellipse = makeEllipse(radius, radius, x, y, colorPallete.babyBlue, `${x}${y}`);
+                    const ellipse = makeEllipse(width, height, x, y, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(ellipse));
 
                     dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
