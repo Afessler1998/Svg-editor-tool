@@ -12,13 +12,12 @@ const SvgContainer = ({ width, height }: { width: number, height: number }) => {
     const svgElementList = ConvertSvgObjectsToElements(list);
 
     const eventHandlers = getSvgEventHandlers(selectedTool);
-    const { handleClick, handleMouseDown, handleMouseMove, handleMouseUp } = eventHandlers;
+    const { handleMouseDown, handleMouseMove, handleMouseUp } = eventHandlers;
 
     return (
         <div className={style.container}>
             <div
             className={style.mask}
-            onClick={handleClick}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}

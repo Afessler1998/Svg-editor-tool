@@ -6,10 +6,14 @@ import { makeRect } from "./makeSvgElements/makeRect";
 import { makeEllipse } from "./makeSvgElements/makeEllipse";
 import { makeLine } from "./makeSvgElements/makeLine";
 import { colorPallete } from "../colorPallete";
+import largerOfTwoNums from "./largerOfTwoNums";
+
 
 export default function getSvgEventHandlers(selectedTool: string) {
 
     const firstPointCoordinates = useSelector((state: RootState) => state.svgList.firstPointCoordinates);
+
+    const { x, y } = firstPointCoordinates;
 
     const dispatch = useDispatch();
 
@@ -39,25 +43,44 @@ export default function getSvgEventHandlers(selectedTool: string) {
             };
         case "ellipse":
             return {
-                handleClick: (e: React.MouseEvent) => {
+                handleMouseDown: (e: React.MouseEvent) => {
                     const target = e.target as SVGElement;
                     const containerBounds = target.getBoundingClientRect();
 
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                    const ellipse = makeEllipse(50, 50, mouseX, mouseY, colorPallete.babyBlue, `${mouseX}${mouseY}`);
+                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                },
+                handleMouseMove: (e: React.MouseEvent) => {
+                    if (x === -1) return;
+                    dispatch(removeElement(`${x}${y}`));
 
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+
+                    const radius = largerOfTwoNums(Math.abs(mouseY - y), Math.abs(mouseX - x));
+
+                    const ellipse = makeEllipse(radius, radius, x, y, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(ellipse));
                 },
-                handleMouseDown: () => {
-                    return;
-                },
-                handleMouseMove: () => {
-                    return;
-                },
-                handleMouseUp: () => {
-                    return;
+                handleMouseUp: (e: React.MouseEvent) => {
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+
+                    const radius = largerOfTwoNums(Math.abs(mouseY - y), Math.abs(mouseX - x));
+
+                    dispatch(removeElement(`${x}${y}`));
+                    const ellipse = makeEllipse(radius, radius, x, y, colorPallete.babyBlue, `${x}${y}`);
+                    dispatch(addElement(ellipse));
+
+                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
                 }
             };
         case "polygon":
@@ -77,21 +100,18 @@ export default function getSvgEventHandlers(selectedTool: string) {
             };
         case "line":
             return {
-                handleClick: () => {
-                    return;
-                },
                 handleMouseDown: (e: React.MouseEvent) => {
                     const target = e.target as SVGElement;
-                const containerBounds = target.getBoundingClientRect();
+                    const containerBounds = target.getBoundingClientRect();
 
-                const mouseX = Math.round(e.clientX - containerBounds.left);
-                const mouseY = Math.round(e.clientY - containerBounds.top);
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
-                    if (firstPointCoordinates.x === -1) return;
-                    dispatch(removeElement(`${firstPointCoordinates.x}${firstPointCoordinates.y}`));
+                    if (x === -1) return;
+                    dispatch(removeElement(`${x}${y}`));
 
                     const target = e.target as SVGElement;
                     const containerBounds = target.getBoundingClientRect();
@@ -99,7 +119,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                    const line = makeLine(firstPointCoordinates.x, firstPointCoordinates.y, mouseX, mouseY, "#000", `${firstPointCoordinates.x}${firstPointCoordinates.y}`);
+                    const line = makeLine(x, y, mouseX, mouseY, "#000", `${x}${y}`);
                     dispatch(addElement(line));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -109,8 +129,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                    dispatch(removeElement(`${firstPointCoordinates.x}${firstPointCoordinates.y}`));
-                    const line = makeLine(firstPointCoordinates.x, firstPointCoordinates.y, mouseX, mouseY, "#000", `${firstPointCoordinates.x}${firstPointCoordinates.y}`);
+                    dispatch(removeElement(`${x}${y}`));
+                    const line = makeLine(x, y, mouseX, mouseY, "#000", `${x}${y}`);
                     dispatch(addElement(line));
 
                     dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
@@ -118,9 +138,6 @@ export default function getSvgEventHandlers(selectedTool: string) {
             };
         default:
             return {
-                handleClick: () => {
-                    return;
-                },
                 handleMouseDown: () => {
                     return;
                 },
