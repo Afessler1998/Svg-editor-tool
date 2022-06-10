@@ -1,15 +1,17 @@
-import { Vector2 } from "../math/calcPolygonVertices";
+import Vector2 from "../vector2";
 
 export interface Polygon{
     type: string,
     points: Array<Vector2>,
+    sides: number,
     fill: string,
     id: string,
 }
 
-export function makePolygon(points: Array<Vector2>, fill: string, id: string): Polygon {
+export function makePolygon(sides: number, points: Array<Vector2>, fill: string, id: string): Polygon {
     return {
         type: "polygon",
+        sides,
         points,
         fill,
         id

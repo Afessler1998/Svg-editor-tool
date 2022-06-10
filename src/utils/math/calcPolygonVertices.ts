@@ -1,4 +1,4 @@
-export type Vector2 = {x: number, y: number};
+import Vector2 from "../vector2";
 
 export function calcPolygonVertices(sides: number, radius: number, center: Vector2, rotation: number): Array<Vector2> {
     const vertices: Vector2[] = [];
