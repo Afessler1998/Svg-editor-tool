@@ -22,5 +22,5 @@ export function makeRect(width: number, height: number, x: number, y: number, fi
 
 export function getRectSvg(rect: Rect) {
     const { width, height, x, y, fill, id } = rect;
-    return <rect width={width} height={height} x={x} y={y} fill={fill} key={id} />
+    return <rect width={width} height={height} x={x} y={y} fill={fill} id={id} key={id} />
 }

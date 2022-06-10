@@ -1,11 +1,13 @@
+import { Vector2 } from "../math/calcPolygonVertices";
+
 export interface Polygon{
     type: string,
-    points: string,
+    points: Array<Vector2>,
     fill: string,
     id: string,
 }
 
-export function makePolygon(points: string, fill: string, id: string): Polygon {
+export function makePolygon(points: Array<Vector2>, fill: string, id: string): Polygon {
     return {
         type: "polygon",
         points,
@@ -16,5 +18,6 @@ export function makePolygon(points: string, fill: string, id: string): Polygon {
 
 export function getPolygonSvg(polygon: Polygon) {
     const { points, fill, id } = polygon;
-    return <polygon points={points} fill={fill} key={id} />
+    const stringPoints = points.map(({x, y}) => `${x},${y}`).join(" ");
+    return <polygon points={stringPoints} fill={fill} id={id} key={id} />
 }

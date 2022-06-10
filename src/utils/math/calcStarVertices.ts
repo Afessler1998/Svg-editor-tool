@@ -7,8 +7,8 @@ export function calcStarVertices(points: number, radius: number, center: Vector2
         let x = radius * Math.cos(angle) + center.x;
         let y = radius * Math.sin(angle) + center.y;
         if (!Number.isInteger(i)) {
-            x = radius/innerRadiusRatio * Math.cos(angle) + center.x;
-            y = radius/innerRadiusRatio * Math.sin(angle) + center.y;
+            x = radius * innerRadiusRatio * Math.cos(angle) + center.x;
+            y = radius * innerRadiusRatio * Math.sin(angle) + center.y;
         }
         vertices.push({x, y});
     }
