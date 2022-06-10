@@ -5,8 +5,10 @@ import { addElement, removeElement, setFirstPointCoordinates } from "../redux-st
 import { makeRect } from "./makeSvgElements/makeRect";
 import { makeEllipse } from "./makeSvgElements/makeEllipse";
 import { makeLine } from "./makeSvgElements/makeLine";
+import { makePolygon } from "./makeSvgElements/makePolygon";
 import { colorPallete } from "../colorPallete";
-
+import { calcPolygonVertices } from "./math/calcPolygonVertices";
+import calcHypotenuse from "./math/calcHypotenuse";
 
 export default function getSvgEventHandlers(selectedTool: string) {
 
@@ -51,6 +53,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     dispatch(addElement(rect));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
+                    dispatch(removeElement(`${x}${y}`));
+
                     const target = e.target as SVGElement;
                     const containerBounds = target.getBoundingClientRect();
 
@@ -66,7 +70,6 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (width < 0) xPosition = mouseX;
                     if (height < 0) yPosition = mouseY;
 
-                    dispatch(removeElement(`${x}${y}`));
                     const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(rect));
 
@@ -101,6 +104,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     dispatch(addElement(ellipse));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
+                    dispatch(removeElement(`${x}${y}`));
+
                     const target = e.target as SVGElement;
                     const containerBounds = target.getBoundingClientRect();
 
@@ -110,7 +115,6 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const width = Math.abs(mouseX - x);
                     const height = Math.abs(mouseY - y);
 
-                    dispatch(removeElement(`${x}${y}`));
                     const ellipse = makeEllipse(width, height, x, y, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(ellipse));
 
@@ -119,17 +123,52 @@ export default function getSvgEventHandlers(selectedTool: string) {
             };
         case "polygon":
             return {
-                handleClick: () => {
-                    return;
+                handleMouseDown: (e: React.MouseEvent) => {
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+
+                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
                 },
-                handleMouseDown: () => {
-                    return;
+                handleMouseMove: (e: React.MouseEvent) => {
+                    if (x === -1) return;
+                    dispatch(removeElement(`${x}${y}`));
+
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+
+                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
+                    const rotation = Math.atan2(mouseY - y, mouseX - x);
+
+                    const polygonVertices = calcPolygonVertices(5, radius, {x, y}, rotation);
+                    const points = polygonVertices.map(({x, y}) => `${x},${y}`).join(" ");
+                    const polygon = makePolygon(points, colorPallete.babyBlue, `${x}${y}`);
+
+                    dispatch(addElement(polygon));
                 },
-                handleMouseMove: () => {
-                    return;
-                },
-                handleMouseUp: () => {
-                    return;
+                handleMouseUp: (e: React.MouseEvent) => {
+                    dispatch(removeElement(`${x}${y}`));
+
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+
+                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
+                    const rotation = Math.atan2(mouseY - y, mouseX - x);
+
+                    const polygonVertices = calcPolygonVertices(5, radius, {x, y}, rotation);
+                    const points = polygonVertices.map(({x, y}) => `${x},${y}`).join(" ");
+                    const polygon = makePolygon(points, colorPallete.babyBlue, `${x}${y}`);
+                    dispatch(addElement(polygon));
+
+                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
                 }
             };
         case "line":
@@ -157,13 +196,14 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     dispatch(addElement(line));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
+                    dispatch(removeElement(`${x}${y}`));
+
                     const target = e.target as SVGElement;
                     const containerBounds = target.getBoundingClientRect();
 
                     const mouseX = Math.round(e.clientX - containerBounds.left);
                     const mouseY = Math.round(e.clientY - containerBounds.top);
 
-                    dispatch(removeElement(`${x}${y}`));
                     const line = makeLine(x, y, mouseX, mouseY, "#000", `${x}${y}`);
                     dispatch(addElement(line));
 

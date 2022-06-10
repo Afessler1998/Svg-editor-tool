@@ -1,6 +1,7 @@
 import { getEllipseSvg } from './makeSvgElements/makeEllipse';
 import { getRectSvg } from './makeSvgElements/makeRect';
-import { getLineSvg } from './makeSvgElements/makeLine'
+import { getLineSvg } from './makeSvgElements/makeLine';
+import { getPolygonSvg } from './makeSvgElements/makePolygon';
 
 
 export default function ConvertSvgObjectsToElements(list: Array<any>) {
@@ -12,6 +13,8 @@ export default function ConvertSvgObjectsToElements(list: Array<any>) {
                 return getRectSvg(element);
             case "line":
                 return getLineSvg(element);
+            case "polygon":
+                return getPolygonSvg(element);
             default:
                 return;
         }
