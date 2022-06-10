@@ -8,6 +8,7 @@ import { makeLine } from "./makeSvgElements/makeLine";
 import { makePolygon } from "./makeSvgElements/makePolygon";
 import { colorPallete } from "../colorPallete";
 import { calcPolygonVertices } from "./math/calcPolygonVertices";
+import { calcStarVertices } from "./math/calcStarVertices";
 import calcHypotenuse from "./math/calcHypotenuse";
 
 export default function getSvgEventHandlers(selectedTool: string) {
@@ -168,6 +169,56 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const polygon = makePolygon(points, colorPallete.babyBlue, `${x}${y}`);
                     dispatch(addElement(polygon));
 
+                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
+                }
+            };
+        case "star":
+            return {
+                handleMouseDown: (e: React.MouseEvent) => {
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+    
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+                    
+                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                },
+                handleMouseMove: (e: React.MouseEvent) => {
+                    if (x === -1) return;
+                    dispatch(removeElement(`${x}${y}`));
+    
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+    
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+    
+                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
+                    const rotation = Math.atan2(mouseY - y, mouseX - x);
+    
+                    const polygonVertices = calcStarVertices(5, radius, {x, y}, rotation, 2.5);
+                    const points = polygonVertices.map(({x, y}) => `${x},${y}`).join(" ");
+                    const polygon = makePolygon(points, colorPallete.babyBlue, `${x}${y}`);
+    
+                    dispatch(addElement(polygon));
+                },
+                handleMouseUp: (e: React.MouseEvent) => {
+                    dispatch(removeElement(`${x}${y}`));
+    
+                    const target = e.target as SVGElement;
+                    const containerBounds = target.getBoundingClientRect();
+    
+                    const mouseX = Math.round(e.clientX - containerBounds.left);
+                    const mouseY = Math.round(e.clientY - containerBounds.top);
+    
+                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
+                    const rotation = Math.atan2(mouseY - y, mouseX - x);
+    
+                    const polygonVertices = calcStarVertices(5, radius, {x, y}, rotation, 2.5);
+                    const points = polygonVertices.map(({x, y}) => `${x},${y}`).join(" ");
+                    const polygon = makePolygon(points, colorPallete.babyBlue, `${x}${y}`);
+                    dispatch(addElement(polygon));
+    
                     dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
                 }
             };
