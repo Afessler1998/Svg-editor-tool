@@ -29,9 +29,6 @@ const SvgContainer = ({ width, height }: { width: number, height: number }) => {
     const [curveControlNodes, setCurveControlNodes] = useState<Array<CurveControlNode>>([]);
     const [pathId, setPathId] = useState("");
 
-    console.log("path nodes: ", pathNodes);
-    console.log("curve nodes: ", curveControlNodes);
-
     return (
         <div className={style.container}>
             <div
@@ -50,8 +47,24 @@ const SvgContainer = ({ width, height }: { width: number, height: number }) => {
                 dispatch(addElement(path));
             }}
             onMouseMove={(e: React.MouseEvent) => {
-                const { x, y } = getRelativePosition(e);
+                let { x, y } = getRelativePosition(e);
+
+                //if mouse is within 5x5 area of any node, snap to it
+                for (let i = 0; i < nodeCount; i++) {
+                    const node = pathNodes[i];
+                    const nodeX = node.x;
+                    const nodeY = node.y;
+                    const xDiff = Math.abs(nodeX - x);
+                    const yDiff = Math.abs(nodeY - y);
+
+                    if (xDiff < 3 && yDiff < 3) {
+                        x = nodeX;
+                        y = nodeY;
+                    }
+                }
+
                 if (mouseDown) {
+
                     const pathNode = makePathNode(x, y, nodeCount + 1);
                     const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount + 1);
                     setPathNodes([...filteredPathNodes, pathNode]);
@@ -70,7 +83,9 @@ const SvgContainer = ({ width, height }: { width: number, height: number }) => {
                     dispatch(removeElement(pathId));
                     const path = makePath(pathNodes, curveControlNodes, "black", "none", pathId, true);
                     dispatch(addElement(path));
+
                 } else if (pathNodes.length > 0) {
+
                     const pathNode = makePathNode(x, y, nodeCount);
                     const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount);
                     setPathNodes([...filteredPathNodes, pathNode]);
