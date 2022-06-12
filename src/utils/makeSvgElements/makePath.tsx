@@ -27,13 +27,22 @@ function deriveDFromNodes(pathNodes: Array<PathNode>, curveControlNodes: Array<C
             d += `M ${pathNodes[i].x} ${pathNodes[i].y} `;
             continue;
         }
+
         const prevCurveControlNode = curveControlNodes.find(node => node.nodeNumber === i - 1);
         const curveControlNode = curveControlNodes.find(node => node.nodeNumber === i);
         const nextCurveControlNode = curveControlNodes.find(node => node.nodeNumber === i + 1);
+
+        //if there are two curve controls in a row, it should be a cubic curve
         if (curveControlNode && nextCurveControlNode) {
+
             d += `C ${curveControlNode.x1} ${curveControlNode.y1} ${nextCurveControlNode.x1} ${nextCurveControlNode.y1} ${nextCurveControlNode.x0} ${nextCurveControlNode.y0} `;
+        
+            //if there is only one curve in a row, it should be a quadratic curve
         } else if (curveControlNode && !prevCurveControlNode && !nextCurveControlNode) {
+
             d += `Q ${curveControlNode.x1} ${curveControlNode.y1} ${curveControlNode.x2} ${curveControlNode.y2} `;
+
+        //    
         } else {
             d += `L ${pathNodes[i].x} ${pathNodes[i].y} `;
         }

@@ -33,31 +33,65 @@ const SvgContainer = ({ width, height }: { width: number, height: number }) => {
         <div className={style.container}>
             <div
             className={style.mask}
+            onContextMenu={(e) => e.preventDefault()}
             onMouseDown={(e: React.MouseEvent) => {
-                const { x, y } = getRelativePosition(e);
+
+                //if right click, finish current path and reset path state
+                if (e.nativeEvent.button === 2) {
+                    if (pathId === "") return;
+                    const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount);
+                    dispatch(removeElement(pathId));
+                    const path = makePath(filteredPathNodes, curveControlNodes, "black", "none", pathId, false);
+                    dispatch(addElement(path));
+                    setPathId("");
+                    setPathNodes([]);
+                    setCurveControlNodes([]);
+                    setNodeCount(-1);
+                    return;
+                }
+
                 setMouseDown(true);
+
+                let { x, y } = getRelativePosition(e);
+
+                //if mouse is within 4x4 area of any node, snap to it
+                for (let i = 0; i < nodeCount; i++) {
+                    const node = pathNodes[i];
+                    if (!node) continue;
+                    const nodeX = node.x;
+                    const nodeY = node.y;
+                    const xDiff = Math.abs(nodeX - x);
+                    const yDiff = Math.abs(nodeY - y);
+
+                    if (xDiff < 4 && yDiff < 4) {
+                        x = nodeX;
+                        y = nodeY;
+                    }
+                }
 
                 if (pathId === "") setPathId(`${x}${y}`);
 
-                if (pathNodes.length !== 0) return;
                 const pathNode = makePathNode(x, y, nodeCount);
-                setPathNodes([...pathNodes, pathNode]);
+                const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount);
+                setPathNodes([...filteredPathNodes, pathNode]);
 
+                dispatch(removeElement(pathId));
                 const path = makePath(pathNodes, curveControlNodes, "black", "none", pathId, true);
                 dispatch(addElement(path));
             }}
             onMouseMove={(e: React.MouseEvent) => {
                 let { x, y } = getRelativePosition(e);
 
-                //if mouse is within 5x5 area of any node, snap to it
+                //if mouse is within 4x4 area of any node, snap to it
                 for (let i = 0; i < nodeCount; i++) {
                     const node = pathNodes[i];
+                    if (!node) continue;
                     const nodeX = node.x;
                     const nodeY = node.y;
                     const xDiff = Math.abs(nodeX - x);
                     const yDiff = Math.abs(nodeY - y);
 
-                    if (xDiff < 3 && yDiff < 3) {
+                    if (xDiff < 4 && yDiff < 4) {
                         x = nodeX;
                         y = nodeY;
                     }
