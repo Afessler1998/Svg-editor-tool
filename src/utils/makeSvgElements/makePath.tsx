@@ -1,4 +1,6 @@
 import Vector2 from "../vector2";
+import { PathNode, getPathNodeSvg } from "./makePathNode";
+import { CurveControlNode, getCurveControlNodeSvg } from "./makePathCurveControl";
 
 export interface PathCommand {
     type: string;
@@ -7,33 +9,63 @@ export interface PathCommand {
 
 export interface Path{
     type: string,
-    d: Array<PathCommand>,
+    d: string,
+    pathNodes: Array<PathNode>,
+    curveControlNodes: Array<CurveControlNode>,
     stroke: string,
+    fill: string,
     id: string,
+    selected: boolean,
 }
 
-export function makePath(d: Array<PathCommand>, stroke: string, id: string): Path {
+//make a function that returns the string for the d attribute of an svg path
+function deriveDFromNodes(pathNodes: Array<PathNode>, curveControlNodes: Array<CurveControlNode>) {
+    let d = "";
+
+    for (let i = 0; i < pathNodes.length; i++) {
+        if (i === 0) {
+            d += `M ${pathNodes[i].x} ${pathNodes[i].y} `;
+            continue;
+        }
+        const curveControlNode = curveControlNodes.find(node => node.nodeNumber === i);
+        if (curveControlNode) {
+            d += `Q ${curveControlNode.x1} ${curveControlNode.y1} ${curveControlNode.x2} ${curveControlNode.y2} `;
+        } else {
+            d += `L ${pathNodes[i].x} ${pathNodes[i].y} `;
+        }
+    }
+
+    return d;
+}
+
+export function makePath(pathNodes: Array<PathNode>, curveControlNodes: Array<CurveControlNode>, stroke: string, fill: string, id: string, selected: boolean): Path {
+    
+    const d = deriveDFromNodes(pathNodes, curveControlNodes);
+
     return {
         type: "path",
         d,
+        pathNodes,
+        curveControlNodes,
         stroke,
-        id
+        fill,
+        id,
+        selected
     }
 }
 
 export function getPathSvg(path: Path) {
-    const { d, stroke, id } = path;
-    
-    const stringD = d.map(command => {
-        const { type, points } = command;
-        const pointsString = points.map(point => {
-            const { x, y } = point;
-            return `${x},${y}`
-        }).join(" ");
-        return `${type} ${pointsString}`
-    }).join(" ");
+    const { d, stroke, fill, id, pathNodes, curveControlNodes, selected } = path;
 
-    return <path d={stringD} stroke={stroke} id={id} key={id} />
+    if (selected) {
+        return <g key={id}>
+            <path d={d} stroke={stroke} fill={fill} id={id} />
+            {curveControlNodes.map(node => getCurveControlNodeSvg(node))}
+            {pathNodes.map(node => getPathNodeSvg(node))}
+        </g>
+    } else {
+        return <path d={d} stroke={stroke} fill={fill} id={id} key={id} />
+    }
 }
 
 /*
@@ -58,22 +90,11 @@ path {
             y: 10
         }]
     }],
+    pathNodes: [{ x: 10, y: 10 }, { x: 50, y: 10 }],
+    curveControlNodes: [{ x: 20, y: 20 }, { x: 40, y: 20 }],
     stroke: "#000",
+    fill: "none",
     id: "path1"
-}
-
-function getPathSvg(path: Path) {
-    const { d, stroke, id } = path;
-    const stringD = d.map(command => {
-        const { type, points } = command;
-        const pointsString = points.map(point => {
-            const { x, y } = point;
-            return `${x},${y}`
-        }).join(" ");
-        return `${type} ${pointsString}`
-    }).join(" ");
-    return <path d={stringD} stroke={stroke} id={id} key={id} />
-    })
 }
 
 */

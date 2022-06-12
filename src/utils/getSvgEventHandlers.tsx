@@ -7,6 +7,8 @@ import { makeEllipse } from "./makeSvgElements/makeEllipse";
 import { makeLine } from "./makeSvgElements/makeLine";
 import { makePolygon } from "./makeSvgElements/makePolygon";
 import { makePath } from "./makeSvgElements/makePath";
+import { makePathNode } from "./makeSvgElements/makePathNode";
+import { makeCurveControlNode } from "./makeSvgElements/makePathCurveControl";
 import { colorPallete } from "../colorPallete";
 import { calcPolygonVertices } from "./math/calcPolygonVertices";
 import { calcStarVertices } from "./math/calcStarVertices";
@@ -260,14 +262,11 @@ export default function getSvgEventHandlers(selectedTool: string) {
             };
         case "path":
             return {
-                handleMouseDown: () => {
-                    return;
+                handleMouseDown: (e: React.MouseEvent) => {
                 },
-                handleMouseMove: () => {
-                    return;
+                handleMouseMove: (e: React.MouseEvent) => {
                 },
-                handleMouseUp: () => {
-                    return;
+                handleMouseUp: (e: React.MouseEvent) => {
                 },
             };
         default:
