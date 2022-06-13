@@ -19,14 +19,16 @@ import getRelativePosition from "./getRelativePosition";
 
 export default function getSvgEventHandlers(selectedTool: string) {
 
-    const firstPointCoordinates = useSelector((state: RootState) => state.svgList.firstPointCoordinates);
     const mouseIsDown = useSelector((state: RootState) => state.eventListener.mouseIsDown);
+    
+    const firstPointCoordinates = useSelector((state: RootState) => state.svgList.firstPointCoordinates);
+    const { x0, y0 } = firstPointCoordinates;
+
+    //the bottom 4 lines are for the path creation tool
     const pathId = useSelector((state: RootState) => state.pathCreation.pathId);
     const pathNodes = useSelector((state: RootState) => state.pathCreation.pathNodes);
     const curveControlNodes = useSelector((state: RootState) => state.pathCreation.curveControlNodes);
     const nodeCount = useSelector((state: RootState) => state.pathCreation.nodeCount);
-
-    const { x, y } = firstPointCoordinates;
 
     const dispatch = useDispatch();
 
@@ -34,238 +36,125 @@ export default function getSvgEventHandlers(selectedTool: string) {
         case "rect":
             return {
                 handleMouseDown: (e: React.MouseEvent) => {
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    dispatch(setMouseIsDown(true));
+                    let { x, y } = getRelativePosition(e);
 
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                    dispatch(setFirstPointCoordinates({ x0: x, y0: y }));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
-                    if (x === -1) return;
-                    dispatch(removeElement(`${x}${y}`));
+                    if (!mouseIsDown) return;
+                    dispatch(removeElement(`${x0}${y0}`));
+                    let { x, y } = getRelativePosition(e);
 
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    const width = x - x0;
+                    const height = y - y0;
 
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
+                    let xPosition = x0;
+                    let yPosition = y0;
 
-                    const width = mouseX - x;
-                    const height = mouseY - y;
+                    if (width < 0) xPosition = x;
+                    if (height < 0) yPosition = y;
 
-                    let xPosition = x;
-                    let yPosition = y;
-
-                    if (width < 0) xPosition = mouseX;
-                    if (height < 0) yPosition = mouseY;
-
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x}${y}`);
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x0}${y0}`);
                     dispatch(addElement(rect));
                 },
-                handleMouseUp: (e: React.MouseEvent) => {
-                    dispatch(removeElement(`${x}${y}`));
-
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
-
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-                    
-                    const width = mouseX - x;
-                    const height = mouseY - y;
-
-                    let xPosition = x;
-                    let yPosition = y;
-
-                    if (width < 0) xPosition = mouseX;
-                    if (height < 0) yPosition = mouseY;
-
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x}${y}`);
-                    dispatch(addElement(rect));
-
-                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
+                handleMouseUp: () => {
+                    dispatch(setMouseIsDown(false));
                 }
             };
         case "ellipse":
             return {
                 handleMouseDown: (e: React.MouseEvent) => {
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    dispatch(setMouseIsDown(true));
+                    let { x, y } = getRelativePosition(e);
 
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                    dispatch(setFirstPointCoordinates({ x0: x, y0: y }));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
-                    if (x === -1) return;
-                    dispatch(removeElement(`${x}${y}`));
+                    if (!mouseIsDown) return;
+                    let { x, y } = getRelativePosition(e);
 
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    dispatch(removeElement(`${x0}${y0}`));
 
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
+                    const width = Math.abs(x - x0);
+                    const height = Math.abs(y - y0);
 
-                    const width = Math.abs(mouseX - x);
-                    const height = Math.abs(mouseY - y);
-
-                    const ellipse = makeEllipse(width, height, x, y, colorPallete.babyBlue, `${x}${y}`);
+                    const ellipse = makeEllipse(width, height, x0, y0, colorPallete.babyBlue, `${x0}${y0}`);
                     dispatch(addElement(ellipse));
                 },
-                handleMouseUp: (e: React.MouseEvent) => {
-                    dispatch(removeElement(`${x}${y}`));
-
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
-
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    const width = Math.abs(mouseX - x);
-                    const height = Math.abs(mouseY - y);
-
-                    const ellipse = makeEllipse(width, height, x, y, colorPallete.babyBlue, `${x}${y}`);
-                    dispatch(addElement(ellipse));
-
-                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
+                handleMouseUp: () => {
+                    dispatch(setMouseIsDown(false));
                 }
             };
         case "polygon":
             return {
                 handleMouseDown: (e: React.MouseEvent) => {
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    dispatch(setMouseIsDown(true));
+                    let { x, y } = getRelativePosition(e);
 
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                    dispatch(setFirstPointCoordinates({ x0: x, y0: y }));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
-                    if (x === -1) return;
-                    dispatch(removeElement(`${x}${y}`));
+                    if (!mouseIsDown) return;
+                    dispatch(removeElement(`${x0}${y0}`));
 
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    let { x, y } = getRelativePosition(e);
 
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
+                    const radius = calcHypotenuse(x - x0, y - y0);
+                    const rotation = Math.atan2(y - y0, x - x0);
 
-                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
-                    const rotation = Math.atan2(mouseY - y, mouseX - x);
-
-                    const polygonVertices = calcPolygonVertices(5, radius, {x, y}, rotation);
-                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x}${y}`);
+                    const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
+                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x0}${y0}`);
 
                     dispatch(addElement(polygon));
                 },
-                handleMouseUp: (e: React.MouseEvent) => {
-                    dispatch(removeElement(`${x}${y}`));
-
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
-
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
-                    const rotation = Math.atan2(mouseY - y, mouseX - x);
-
-                    const polygonVertices = calcPolygonVertices(5, radius, {x, y}, rotation);
-                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x}${y}`);
-                    dispatch(addElement(polygon));
-
-                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
+                handleMouseUp: () => {
+                    dispatch(setMouseIsDown(false));
                 }
             };
         case "star":
             return {
                 handleMouseDown: (e: React.MouseEvent) => {
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
-    
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
+                    dispatch(setMouseIsDown(true));
+                    let { x, y } = getRelativePosition(e);
                     
-                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                    dispatch(setFirstPointCoordinates({ x0: x, y0: y }));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
-                    if (x === -1) return;
-                    dispatch(removeElement(`${x}${y}`));
+                    if (!mouseIsDown) return;
+                    let { x, y } = getRelativePosition(e);
+                    dispatch(removeElement(`${x0}${y0}`));
     
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    const radius = calcHypotenuse(x - x0, y - y0);
+                    const rotation = Math.atan2(y - y0, x - x0);
     
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-    
-                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
-                    const rotation = Math.atan2(mouseY - y, mouseX - x);
-    
-                    const polygonVertices = calcStarVertices(5, radius, {x, y}, rotation, 0.4);
-                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x}${y}`);
+                    const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
+                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x0}${y0}`);
     
                     dispatch(addElement(polygon));
                 },
-                handleMouseUp: (e: React.MouseEvent) => {
-                    dispatch(removeElement(`${x}${y}`));
-    
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
-    
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-    
-                    const radius = calcHypotenuse(mouseX - x, mouseY - y);
-                    const rotation = Math.atan2(mouseY - y, mouseX - x);
-    
-                    const polygonVertices = calcStarVertices(5, radius, {x, y}, rotation, 0.4);
-                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x}${y}`);
-                    dispatch(addElement(polygon));
-    
-                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
+                handleMouseUp: () => {
+                    dispatch(setMouseIsDown(false));
                 }
             };
         case "line":
             return {
                 handleMouseDown: (e: React.MouseEvent) => {
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
+                    dispatch(setMouseIsDown(true));
+                    let { x, y } = getRelativePosition(e);
 
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    dispatch(setFirstPointCoordinates({ x: mouseX, y: mouseY }));
+                    dispatch(setFirstPointCoordinates({ x0: x, y0: y }));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
-                    if (x === -1) return;
-                    dispatch(removeElement(`${x}${y}`));
+                    if (!mouseIsDown) return;
+                    let { x, y } = getRelativePosition(e);
+                    dispatch(removeElement(`${x0}${y0}`));
 
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
-
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    const line = makeLine(x, y, mouseX, mouseY, "#000", `${x}${y}`);
+                    const line = makeLine(x0, y0, x, y, "#000", `${x0}${y0}`);
                     dispatch(addElement(line));
                 },
-                handleMouseUp: (e: React.MouseEvent) => {
-                    dispatch(removeElement(`${x}${y}`));
-
-                    const target = e.target as SVGElement;
-                    const containerBounds = target.getBoundingClientRect();
-
-                    const mouseX = Math.round(e.clientX - containerBounds.left);
-                    const mouseY = Math.round(e.clientY - containerBounds.top);
-
-                    const line = makeLine(x, y, mouseX, mouseY, "#000", `${x}${y}`);
-                    dispatch(addElement(line));
-
-                    dispatch(setFirstPointCoordinates({ x: -1, y: -1 }));
+                handleMouseUp: () => {
+                    dispatch(setMouseIsDown(false));
                 },
             };
         case "path":

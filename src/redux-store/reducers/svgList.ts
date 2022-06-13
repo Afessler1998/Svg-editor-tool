@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface svgList {
-  firstPointCoordinates: {x: number, y: number},
+  firstPointCoordinates: {x0: number, y0: number},
   list: Array<any>,
   selectedElement: any,
 }
 
 const initialState: svgList = {
-  firstPointCoordinates: {x: -1, y: -1},
+  firstPointCoordinates: {x0: 0, y0: 0},
   list: [],
   selectedElement: null,
 }
@@ -16,7 +16,7 @@ export const svgListSlice = createSlice({
   name: 'svgList',
   initialState,
   reducers: {
-    setFirstPointCoordinates(state, action: PayloadAction<{x: number, y: number}>) {
+    setFirstPointCoordinates(state, action: PayloadAction<{x0: number, y0: number}>) {
       state.firstPointCoordinates = action.payload;
     },
     addElement(state, action: PayloadAction<any>) {
