@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
+import project from "./reducers/project";
 import svgList from "./reducers/svgList";
 import selectTool from './reducers/selectTool';
 import eventListener from './reducers/eventListener';
@@ -7,6 +8,7 @@ import pathCreation from "./reducers/pathCreation";
 
 export const store = configureStore({
   reducer: {
+      project: project,
       svgList: svgList,
       selectTool: selectTool,
       eventListener: eventListener,
