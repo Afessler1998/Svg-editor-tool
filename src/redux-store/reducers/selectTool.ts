@@ -5,7 +5,7 @@ export interface selectTool {
 }
 
 const initialState: selectTool = {
-  selectedTool: "path"
+  selectedTool: "ellipse"
 }
 
 export const selectToolSlice = createSlice({

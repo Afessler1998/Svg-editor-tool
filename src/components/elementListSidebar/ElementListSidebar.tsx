@@ -11,14 +11,11 @@ const elementListSidebar = () => {
     const selectedElement = useSelector((state: RootState) => state.svgList.selectedElement);
     const dispatch = useDispatch();
 
-
-    console.log(selectedElement);
-
     return (
         <div className={style.container}>
             {list.map((element) => 
                 <div 
-                className={style.listItem} 
+                className={element.id === selectedElement ? style.listItemSelected : style.listItem} 
                 key={element.id}
                 onClick={() => {
                     dispatch(setSelectedElement(element.id));

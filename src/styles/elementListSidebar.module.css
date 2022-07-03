@@ -14,3 +14,10 @@
 .listItem:hover {
     background-color: #606060;
 }
+
+.listItemSelected {
+    background-color: #0096FF;
+    font-size: 2rem;
+    color: #fff;
+    padding: 0.25rem 0 0.25rem 2rem;
+}
