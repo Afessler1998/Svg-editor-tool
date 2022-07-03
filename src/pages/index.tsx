@@ -3,8 +3,8 @@ import Head from 'next/head';
 import style from "../styles/layout.module.css";
 import Toolbar from '../components/toolbar/Toolbar';
 import SvgContainer from '../components/svg/SvgContainer';
-import ElementListSidebar from '../components/elementListSidebar/elementListSidebar';
-import ElementControlSidebar from '../components/elementControlSidebar/elementControlSidebar';
+import ElementListSidebar from '../components/elementListSidebar/ElementListSidebar';
+import ElementControlSidebar from '../components/elementControlSidebar/ElementControlSidebar';
 
 const Home: NextPage = () => {
 
