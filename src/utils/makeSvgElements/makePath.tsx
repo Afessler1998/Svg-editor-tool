@@ -15,7 +15,6 @@ export interface Path{
     stroke: string,
     fill: string,
     id: string,
-    selected: boolean,
 }
 
 //make a function that returns the string for the d attribute of an svg path
@@ -51,7 +50,7 @@ function deriveDFromNodes(pathNodes: Array<PathNode>, curveControlNodes: Array<C
     return d;
 }
 
-export function makePath(pathNodes: Array<PathNode>, curveControlNodes: Array<CurveControlNode>, stroke: string, fill: string, id: string, selected: boolean): Path {
+export function makePath(pathNodes: Array<PathNode>, curveControlNodes: Array<CurveControlNode>, stroke: string, fill: string, id: string): Path {
     
     const d = deriveDFromNodes(pathNodes, curveControlNodes);
 
@@ -63,12 +62,11 @@ export function makePath(pathNodes: Array<PathNode>, curveControlNodes: Array<Cu
         stroke,
         fill,
         id,
-        selected
     }
 }
 
-export function getPathSvg(path: Path) {
-    const { d, stroke, fill, id, pathNodes, curveControlNodes, selected } = path;
+export function getPathSvg(path: Path, selected: boolean) {
+    const { d, stroke, fill, id, pathNodes, curveControlNodes } = path;
 
     if (selected) {
         return <g key={id}>
@@ -80,34 +78,3 @@ export function getPathSvg(path: Path) {
         return <path d={d} stroke={stroke} fill={fill} id={id} key={id} />
     }
 }
-
-/*
-path {
-    type: "path",
-    d: [{
-        type: "M",
-        points: [{
-            x: 10,
-            y: 10
-        }]
-    }, {
-        type: "C",
-        points: [{
-            x: 20,
-            y: 20
-        }, {
-            x: 40,
-            y: 20,
-        }, {
-            x: 50,
-            y: 10
-        }]
-    }],
-    pathNodes: [{ x: 10, y: 10 }, { x: 50, y: 10 }],
-    curveControlNodes: [{ x: 20, y: 20 }, { x: 40, y: 20 }],
-    stroke: "#000",
-    fill: "none",
-    id: "path1"
-}
-
-*/

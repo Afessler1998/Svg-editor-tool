@@ -6,7 +6,7 @@ import { getStarPolygonSvg } from './makeSvgElements/makeStarPolygon';
 import { getPathSvg } from './makeSvgElements/makePath';
 
 
-export default function ConvertSvgObjectsToElements(list: Array<any>) {
+export default function ConvertSvgObjectsToElements(list: Array<any>, selectedElement: string) {
     return list.map((element) => {
         switch(element.type) {
             case "ellipse":
@@ -20,7 +20,8 @@ export default function ConvertSvgObjectsToElements(list: Array<any>) {
             case "starPolygon":
                 return getStarPolygonSvg(element);
             case "path":
-                return getPathSvg(element);
+                const selected = element.id === selectedElement ? true : false;
+                return getPathSvg(element, selected);
             default:
                 return;
         }

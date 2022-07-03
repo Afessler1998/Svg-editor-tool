@@ -8,8 +8,9 @@ import getSvgEventHandlers from '../../utils/getSvgEventHandlers';
 const SvgContainer = ({ width, height }: { width: number, height: number }) => {
     const list = useSelector((state: RootState) => state.svgList.list);
     const selectedTool = useSelector((state: RootState) => state.selectTool.selectedTool);
+    const selectedElement = useSelector((state: RootState) => state.svgList.selectedElement);
 
-    const svgElementList = ConvertSvgObjectsToElements(list);
+    const svgElementList = ConvertSvgObjectsToElements(list, selectedElement);
 
     const eventHandlers = getSvgEventHandlers(selectedTool);
     const { handleMouseDown, handleMouseMove, handleMouseUp } = eventHandlers;
