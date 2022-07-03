@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface eventListener {
-  title: String
+  title: string
 }
 
 const initialState: eventListener = {
@@ -12,7 +12,7 @@ export const eventListenerSlice = createSlice({
   name: 'eventListener',
   initialState,
   reducers: {
-    setTitle(state, action: PayloadAction<String>) {
+    setTitle(state, action: PayloadAction<string>) {
         state.title = action.payload;
     },
   },

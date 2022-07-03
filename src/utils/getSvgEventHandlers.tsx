@@ -8,6 +8,7 @@ import { makeRect } from "./makeSvgElements/makeRect";
 import { makeEllipse } from "./makeSvgElements/makeEllipse";
 import { makeLine } from "./makeSvgElements/makeLine";
 import { makePolygon } from "./makeSvgElements/makePolygon";
+import { makeStarPolygon } from "./makeSvgElements/makeStarPolygon";
 import { makePath } from "./makeSvgElements/makePath";
 import { makePathNode } from "./makeSvgElements/makePathNode";
 import { makeCurveControlNode } from "./makeSvgElements/makePathCurveControl";
@@ -129,9 +130,9 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
     
                     const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
-                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x0}${y0}`);
+                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, colorPallete.babyBlue, `${x0}${y0}`);
     
-                    dispatch(addElement(polygon));
+                    dispatch(addElement(starPolygon));
                 },
                 handleMouseUp: () => {
                     dispatch(setMouseIsDown(false));
