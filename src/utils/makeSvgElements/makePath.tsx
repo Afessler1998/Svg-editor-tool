@@ -71,7 +71,6 @@ export function getPathSvg(path: Path) {
     const { d, stroke, fill, id, pathNodes, curveControlNodes, selected } = path;
 
     if (selected) {
-        //console.log(id);
         return <g key={id}>
             <path d={d} stroke={stroke} fill={fill} id={id} />
             {curveControlNodes.map(node => getCurveControlNodeSvg(node))}

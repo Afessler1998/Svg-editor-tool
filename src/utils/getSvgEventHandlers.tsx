@@ -18,7 +18,10 @@ import { calcStarVertices } from "./math/calcStarVertices";
 import calcHypotenuse from "./math/calcHypotenuse";
 import getRelativePosition from "./getRelativePosition";
 
+
 export default function getSvgEventHandlers(selectedTool: string) {
+
+    const listSize = useSelector((state: RootState) => state.svgList.list.length);
 
     const mouseIsDown = useSelector((state: RootState) => state.eventListener.mouseIsDown);
     
@@ -59,8 +62,22 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x0}${y0}`);
                     dispatch(addElement(rect));
                 },
-                handleMouseUp: () => {
+                handleMouseUp: (e: React.MouseEvent) => {
                     dispatch(setMouseIsDown(false));
+                    dispatch(removeElement(`${x0}${y0}`));
+                    let { x, y } = getRelativePosition(e);
+
+                    const width = x - x0;
+                    const height = y - y0;
+
+                    let xPosition = x0;
+                    let yPosition = y0;
+
+                    if (width < 0) xPosition = x;
+                    if (height < 0) yPosition = y;
+
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${listSize}`);
+                    dispatch(addElement(rect));
                 }
             };
         case "ellipse":
@@ -83,8 +100,18 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const ellipse = makeEllipse(width, height, x0, y0, colorPallete.babyBlue, `${x0}${y0}`);
                     dispatch(addElement(ellipse));
                 },
-                handleMouseUp: () => {
+                handleMouseUp: (e: React.MouseEvent) => {
                     dispatch(setMouseIsDown(false));
+
+                    let { x, y } = getRelativePosition(e);
+
+                    dispatch(removeElement(`${x0}${y0}`));
+
+                    const width = Math.abs(x - x0);
+                    const height = Math.abs(y - y0);
+
+                    const ellipse = makeEllipse(width, height, x0, y0, colorPallete.babyBlue, `${listSize}`);
+                    dispatch(addElement(ellipse));
                 }
             };
         case "polygon":
@@ -109,8 +136,20 @@ export default function getSvgEventHandlers(selectedTool: string) {
 
                     dispatch(addElement(polygon));
                 },
-                handleMouseUp: () => {
+                handleMouseUp: (e: React.MouseEvent) => {
                     dispatch(setMouseIsDown(false));
+
+                    dispatch(removeElement(`${x0}${y0}`));
+
+                    let { x, y } = getRelativePosition(e);
+
+                    const radius = calcHypotenuse(x - x0, y - y0);
+                    const rotation = Math.atan2(y - y0, x - x0);
+
+                    const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
+                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${listSize}`);
+
+                    dispatch(addElement(polygon));
                 }
             };
         case "star":
@@ -134,8 +173,19 @@ export default function getSvgEventHandlers(selectedTool: string) {
     
                     dispatch(addElement(starPolygon));
                 },
-                handleMouseUp: () => {
+                handleMouseUp: (e: React.MouseEvent) => {
                     dispatch(setMouseIsDown(false));
+
+                    let { x, y } = getRelativePosition(e);
+                    dispatch(removeElement(`${x0}${y0}`));
+    
+                    const radius = calcHypotenuse(x - x0, y - y0);
+                    const rotation = Math.atan2(y - y0, x - x0);
+    
+                    const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
+                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, colorPallete.babyBlue, `${listSize}`);
+    
+                    dispatch(addElement(starPolygon));
                 }
             };
         case "line":
@@ -154,8 +204,14 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const line = makeLine(x0, y0, x, y, "#000", `${x0}${y0}`);
                     dispatch(addElement(line));
                 },
-                handleMouseUp: () => {
+                handleMouseUp: (e: React.MouseEvent) => {
                     dispatch(setMouseIsDown(false));
+
+                    let { x, y } = getRelativePosition(e);
+                    dispatch(removeElement(`${x0}${y0}`));
+
+                    const line = makeLine(x0, y0, x, y, "#000", `${listSize}`);
+                    dispatch(addElement(line));
                 },
             };
         case "path":
@@ -167,7 +223,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (pathId === "") return;
                     const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount);
                     dispatch(removeElement(pathId));
-                    const path = makePath(filteredPathNodes, curveControlNodes, "black", "none", pathId, false);
+                    const path = makePath(filteredPathNodes, curveControlNodes, "black", "none", `${listSize}`, false);
                     dispatch(addElement(path));
                     dispatch(setPathId(""));
                     dispatch(setPathNodes([]));
