@@ -1,4 +1,4 @@
-import Vector2 from "../vector2";
+import Vector2 from "../math/vector2";
 import { PathNode, getPathNodeSvg } from "./makePathNode";
 import { CurveControlNode, getCurveControlNodeSvg } from "./makePathCurveControl";
 
@@ -71,6 +71,7 @@ export function getPathSvg(path: Path) {
     const { d, stroke, fill, id, pathNodes, curveControlNodes, selected } = path;
 
     if (selected) {
+        //console.log(id);
         return <g key={id}>
             <path d={d} stroke={stroke} fill={fill} id={id} />
             {curveControlNodes.map(node => getCurveControlNodeSvg(node))}

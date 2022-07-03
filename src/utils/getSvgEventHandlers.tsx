@@ -195,14 +195,16 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     }
                 }
 
-                if (pathId === "") dispatch(setPathId(`${x}${y}`));
+                let id = `${x}${y}`;
+                if (pathId === "") dispatch(setPathId(id));
 
                 const pathNode = makePathNode(x, y, nodeCount);
                 const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount);
                 dispatch(setPathNodes([...filteredPathNodes, pathNode]));
 
-                dispatch(removeElement(pathId));
-                const path = makePath(pathNodes, curveControlNodes, "black", "none", pathId, true);
+                dispatch(removeElement(pathId || id));
+                const path = makePath(pathNodes, curveControlNodes, "black", "none", pathId || id, true);
+
                 dispatch(addElement(path));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
