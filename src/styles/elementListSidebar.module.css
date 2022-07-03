@@ -2,14 +2,15 @@
     width: 20vw;
     height: 100%;
     background-color: #282828;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     padding-top: 1rem;
 }
 
 .listItem {
     font-size: 2rem;
     color: #fff;
-    margin-left: 2rem;
+    padding: 0.25rem 0 0.25rem 2rem;
+}
+
+.listItem:hover {
+    background-color: #606060;
 }

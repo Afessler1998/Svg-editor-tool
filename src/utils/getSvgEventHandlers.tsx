@@ -12,7 +12,6 @@ import { makeStarPolygon } from "./makeSvgElements/makeStarPolygon";
 import { makePath } from "./makeSvgElements/makePath";
 import { makePathNode } from "./makeSvgElements/makePathNode";
 import { makeCurveControlNode } from "./makeSvgElements/makePathCurveControl";
-import { colorPallete } from "../colorPallete";
 import { calcPolygonVertices } from "./math/calcPolygonVertices";
 import { calcStarVertices } from "./math/calcStarVertices";
 import calcHypotenuse from "./math/calcHypotenuse";
@@ -59,7 +58,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (width < 0) xPosition = x;
                     if (height < 0) yPosition = y;
 
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${x0}${y0}`);
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", `${x0}${y0}`);
                     dispatch(addElement(rect));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -76,7 +75,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (width < 0) xPosition = x;
                     if (height < 0) yPosition = y;
 
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, colorPallete.babyBlue, `${listSize}`);
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", `${listSize}`);
                     dispatch(addElement(rect));
                 }
             };
@@ -97,7 +96,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const width = Math.abs(x - x0);
                     const height = Math.abs(y - y0);
 
-                    const ellipse = makeEllipse(width, height, x0, y0, colorPallete.babyBlue, `${x0}${y0}`);
+                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", `${x0}${y0}`);
                     dispatch(addElement(ellipse));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -110,7 +109,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const width = Math.abs(x - x0);
                     const height = Math.abs(y - y0);
 
-                    const ellipse = makeEllipse(width, height, x0, y0, colorPallete.babyBlue, `${listSize}`);
+                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", `${listSize}`);
                     dispatch(addElement(ellipse));
                 }
             };
@@ -132,7 +131,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
 
                     const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
-                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${x0}${y0}`);
+                    const polygon = makePolygon(5, polygonVertices, "#89CFF0", `${x0}${y0}`);
 
                     dispatch(addElement(polygon));
                 },
@@ -147,7 +146,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
 
                     const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
-                    const polygon = makePolygon(5, polygonVertices, colorPallete.babyBlue, `${listSize}`);
+                    const polygon = makePolygon(5, polygonVertices, "#89CFF0", `${listSize}`);
 
                     dispatch(addElement(polygon));
                 }
@@ -169,7 +168,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
     
                     const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
-                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, colorPallete.babyBlue, `${x0}${y0}`);
+                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", `${x0}${y0}`);
     
                     dispatch(addElement(starPolygon));
                 },
@@ -183,7 +182,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
     
                     const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
-                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, colorPallete.babyBlue, `${listSize}`);
+                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", `${listSize}`);
     
                     dispatch(addElement(starPolygon));
                 }

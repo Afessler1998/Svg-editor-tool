@@ -8,9 +8,11 @@ import { setSelectedElement } from '../../redux-store/reducers/svgList';
 const elementListSidebar = () => {
 
     const list = useSelector((state: RootState) => state.svgList.list);
+    const selectedElement = useSelector((state: RootState) => state.svgList.selectedElement);
     const dispatch = useDispatch();
 
-    console.log(list);
+
+    console.log(selectedElement);
 
     return (
         <div className={style.container}>
@@ -19,7 +21,6 @@ const elementListSidebar = () => {
                 className={style.listItem} 
                 key={element.id}
                 onClick={() => {
-                    console.log(element.id);
                     dispatch(setSelectedElement(element.id));
                 }}>
                     {getElementName(element)}
