@@ -1,4 +1,5 @@
 import calcPolygonDimensions from "./calcPolygonDimensions";
+import calcLineDimensions from "./calcLineDimensions";
 
 export default function getElementDimensions(element: any) {
     switch(element.type) {
@@ -7,7 +8,7 @@ export default function getElementDimensions(element: any) {
         case "rect":
             return { width: element.width, height: element.height };
         case "line":
-            return { width: element.x2 - element.x1, height: element.y2 - element.y1 };
+            return calcLineDimensions(element);
         case "polygon":
             return calcPolygonDimensions(element.vertices);
         case "starPolygon":

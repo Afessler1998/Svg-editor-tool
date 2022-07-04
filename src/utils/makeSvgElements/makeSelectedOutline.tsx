@@ -32,14 +32,14 @@ export function getSelectedOutlineSvg(selectedOutline: SelectedOutline) {
         <line x1={point3.x} y1={point3.y} x2={point4.x} y2={point4.y} stroke="black" strokeWidth="1" />
         <line x1={point4.x} y1={point4.y} x2={point1.x} y2={point1.y} stroke="black" strokeWidth="1" />
 
-        <circle cx={point1.x} cy={point1.y} r={5} strokeWidth={3} stroke={"#89CFF0"} fill={"#fff"} />
-        <circle cx={point2.x} cy={point2.y} r={5} strokeWidth={3} stroke={"#89CFF0"} fill={"#fff"} />
-        <circle cx={point3.x} cy={point3.y} r={5} strokeWidth={3} stroke={"#89CFF0"} fill={"#fff"} />
-        <circle cx={point4.x} cy={point4.y} r={5} strokeWidth={3} stroke={"#89CFF0"} fill={"#fff"} />
+        <circle cx={point1.x} cy={point1.y} r={5} strokeWidth={2} stroke={"black"} fill={"#fff"} />
+        <circle cx={point2.x} cy={point2.y} r={5} strokeWidth={2} stroke={"black"} fill={"#fff"} />
+        <circle cx={point3.x} cy={point3.y} r={5} strokeWidth={2} stroke={"black"} fill={"#fff"} />
+        <circle cx={point4.x} cy={point4.y} r={5} strokeWidth={2} stroke={"black"} fill={"#fff"} />
 
-        <circle cx={point1.x - 10} cy={point1.y + 10} r={4} strokeWidth={2} stroke={"#89CFF0"} fill={"#fff"} />
-        <circle cx={point2.x + 10} cy={point2.y + 10} r={4} strokeWidth={2} stroke={"#89CFF0"} fill={"#fff"} />
-        <circle cx={point3.x + 10} cy={point3.y - 10} r={4} strokeWidth={2} stroke={"#89CFF0"} fill={"#fff"} />
-        <circle cx={point4.x - 10} cy={point4.y - 10} r={4} strokeWidth={2} stroke={"#89CFF0"} fill={"#fff"} />
+        <circle cx={point1.x - 10} cy={point1.y + 10} r={4} strokeWidth={2} stroke={"black"} fill={"#fff"} />
+        <circle cx={point2.x + 10} cy={point2.y + 10} r={4} strokeWidth={2} stroke={"black"} fill={"#fff"} />
+        <circle cx={point3.x + 10} cy={point3.y - 10} r={4} strokeWidth={2} stroke={"black"} fill={"#fff"} />
+        <circle cx={point4.x - 10} cy={point4.y - 10} r={4} strokeWidth={2} stroke={"black"} fill={"#fff"} />
     </g>
 }

@@ -1,3 +1,4 @@
+import calcLineCenter from "./calcLineCenter";
 import calcPolygonCenter from "./calcPolygonCenter";
 
 export default function getElementCenter(element: any) {
@@ -7,7 +8,7 @@ export default function getElementCenter(element: any) {
         case "rect":
             return { x: element.x + element.width / 2, y: element.y + element.height / 2 };
         case "line":
-            return { x: (element.x1 + element.x2) / 2, y: (element.y1 + element.y2) / 2 };
+            return calcLineCenter(element);
         case "polygon":
             return calcPolygonCenter(element.vertices);
         case "starPolygon":

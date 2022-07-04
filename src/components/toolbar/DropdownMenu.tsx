@@ -3,6 +3,7 @@ import style from "../../styles/toolbar.module.css";
 import { RootState } from '../../redux-store/store';
 import { setSelectedTool } from '../../redux-store/reducers/selectTool';
 import { useDispatch, useSelector } from 'react-redux';
+import { removeElement, setSelectedElement } from '../../redux-store/reducers/svgList';
 
 interface Props {
     title: string,
@@ -21,7 +22,11 @@ const DropdownMenu = (props: Props) => {
             {title}
             <div className={style.dropdownContent}>
                 {items.map(({ title, tool }) => {
-                    return <div onClick={() => dispatch(setSelectedTool(tool))} className={selectedTool === tool ? style.dropdownItemSelected : style.dropdownItem} key={title}>{title}</div>
+                    return <div onClick={() => {
+                        dispatch(setSelectedTool(tool));
+                        dispatch(setSelectedElement(null));
+                        dispatch(removeElement("selectedOutline"));
+                    }} className={selectedTool === tool ? style.dropdownItemSelected : style.dropdownItem} key={title}>{title}</div>
                 })}
             </div>
         </div>

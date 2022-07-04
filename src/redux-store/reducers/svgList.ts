@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface svgList {
   firstPointCoordinates: {x0: number, y0: number},
