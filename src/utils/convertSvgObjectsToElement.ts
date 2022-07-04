@@ -4,6 +4,7 @@ import { getLineSvg } from './makeSvgElements/makeLine';
 import { getPolygonSvg } from './makeSvgElements/makePolygon';
 import { getStarPolygonSvg } from './makeSvgElements/makeStarPolygon';
 import { getPathSvg } from './makeSvgElements/makePath';
+import { getSelectedOutlineSvg } from './makeSvgElements/makeSelectedOutline';
 
 
 export default function ConvertSvgObjectsToElements(list: Array<any>, selectedElement: string) {
@@ -22,6 +23,8 @@ export default function ConvertSvgObjectsToElements(list: Array<any>, selectedEl
             case "path":
                 const selected = element.id === selectedElement ? true : false;
                 return getPathSvg(element, selected);
+            case "selectedOutline":
+                return getSelectedOutlineSvg(element);
             default:
                 return;
         }

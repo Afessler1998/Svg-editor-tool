@@ -8,11 +8,6 @@ const Toolbar = () => {
     return (
         <div className={style.container}>
             <ProjectTitlebar />
-            <DropdownMenu title="Tools" items={[
-                {title: "Resize Tool", tool: "resize"},
-                {title: "Transform Tool", tool: "transform"},
-                {title: "Node Tool", tool: "node"},
-            ]} />
             <DropdownMenu title="Elements" items={[
                 {title: "Ellipse", tool: "ellipse"},
                 {title: "Rectangle", tool: "rect"},

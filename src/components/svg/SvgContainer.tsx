@@ -17,13 +17,13 @@ const SvgContainer = ({ width, height }: { width: number, height: number }) => {
 
     return (
         <div className={style.container}>
-            <div
+            {!selectedElement && <div
             className={style.mask}
             onContextMenu={(e) => e.preventDefault()}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
-            />
+            />}
             <svg viewBox={`0 0 ${width} ${height}`} xmlns="http://www.w3.org/2000/svg" style={{ width, height }} >
                 {svgElementList}
             </svg>
