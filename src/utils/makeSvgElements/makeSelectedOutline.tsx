@@ -1,4 +1,10 @@
-import Vector2 from "../math/vector2"
+import Vector2 from "../math/vector2";
+
+interface resizeNode {
+    x: number,
+    y: number,
+    point: number,
+}
 
 export interface SelectedOutline{
     type: string,
@@ -6,6 +12,7 @@ export interface SelectedOutline{
     center: Vector2,
     width: number,
     height: number,
+    points: resizeNode[],
 }
 
 export function makeSelectedOutline(center: Vector2, width: number, height: number): SelectedOutline {
@@ -14,17 +21,20 @@ export function makeSelectedOutline(center: Vector2, width: number, height: numb
         id: "selectedOutline",
         center,
         width,
-        height
+        height,
+        points: [
+            {x: center.x - width/2, y: center.y + height/2, point: 4},
+            {x: center.x + width/2, y: center.y + height/2, point: 3},
+            {x: center.x + width/2, y: center.y - height/2, point: 2},
+            {x: center.x - width/2, y: center.y - height/2, point: 1},
+        ],
     }
 }
 
 export function getSelectedOutlineSvg(selectedOutline: SelectedOutline) {
-    const { id, center, width, height } = selectedOutline;
 
-    const point1 = {x: center.x - width/2, y: center.y + height/2};
-    const point2 = {x: center.x + width/2, y: center.y + height/2};
-    const point3 = {x: center.x + width/2, y: center.y - height/2};
-    const point4 = {x: center.x - width/2, y: center.y - height/2};
+    const { id, center, width, height, points } = selectedOutline;
+    const [point1, point2, point3, point4] = points;
 
     return <g key={id}>
         <line x1={point1.x} y1={point1.y} x2={point2.x} y2={point2.y} stroke="black" strokeWidth="1" />

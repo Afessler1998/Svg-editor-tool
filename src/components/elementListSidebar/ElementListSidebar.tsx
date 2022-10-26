@@ -3,7 +3,7 @@ import style from "../../styles/elementListSidebar.module.css";
 import { RootState } from '../../redux-store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import getElementName from '../../utils/getElementName';
-import { addElement, removeElement, setSelectedElement } from '../../redux-store/reducers/svgList';
+import { addElement, removeElement, setSelectedElement, setSelectedOutline } from '../../redux-store/reducers/svgList';
 import getElementCenter from '../../utils/math/getElementCenter';
 import getElementDimensions from '../../utils/math/getElementDimensions';
 import { makeSelectedOutline } from '../../utils/makeSvgElements/makeSelectedOutline';
@@ -13,6 +13,7 @@ const elementListSidebar = () => {
 
     const list = useSelector((state: RootState) => state.svgList.list);
     const selectedElement = useSelector((state: RootState) => state.svgList.selectedElement);
+    const selectedTool = useSelector((state: RootState) => state.selectTool.selectedTool);
     const dispatch = useDispatch();
 
     return (
@@ -24,10 +25,11 @@ const elementListSidebar = () => {
                 key={element.id}
                 onClick={() => {
                     dispatch(removeElement("selectedOutline"));
-                    dispatch(setSelectedTool(""));
+                    selectedTool === "resize node" ? dispatch(setSelectedTool("")) : dispatch(setSelectedTool("resize node"));
 
                     if (selectedElement === element.id) {
                         dispatch(setSelectedElement(null));
+                        dispatch(setSelectedOutline(null));
                         return;
                     }
 
@@ -38,6 +40,7 @@ const elementListSidebar = () => {
                     const { width, height } = getElementDimensions(targetElement);
                     const selectedOutline = makeSelectedOutline(center, width, height);
                     dispatch(addElement(selectedOutline));
+                    dispatch(setSelectedOutline(selectedOutline));
                 }}>
                     {getElementName(element)}
                 </div>;

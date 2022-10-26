@@ -1,7 +1,7 @@
 import React from "react";
 import { RootState } from "../redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { addElement, removeElement, setFirstPointCoordinates, setSelectedElement } from "../redux-store/reducers/svgList";
+import { addElement, removeElement, setFirstPointCoordinates, setSelectedElement, setSelectedOutline, setSelectedNode } from "../redux-store/reducers/svgList";
 import { setPathId, setNodeCount, setPathNodes, setCurveControlNodes } from "../redux-store/reducers/pathCreation";
 import { setMouseIsDown } from "../redux-store/reducers/eventListener";
 import { makeRect } from "./makeSvgElements/makeRect";
@@ -14,18 +14,28 @@ import { makePathNode } from "./makeSvgElements/makePathNode";
 import { makeCurveControlNode } from "./makeSvgElements/makePathCurveControl";
 import { calcPolygonVertices } from "./math/calcPolygonVertices";
 import { calcStarVertices } from "./math/calcStarVertices";
+import useNodeClicked from "./math/useNodeClicked";
 import calcHypotenuse from "./math/calcHypotenuse";
 import getRelativePosition from "./getRelativePosition";
+import resizeElement from "./math/resizeElement";
+import getElementCenter from "./math/getElementCenter";
+import getElementDimensions from "./math/getElementDimensions";
+import { makeSelectedOutline } from "./makeSvgElements/makeSelectedOutline";
 
 
 export default function getSvgEventHandlers(selectedTool: string) {
 
-    const listSize = useSelector((state: RootState) => state.svgList.list.length);
+    const list = useSelector((state: RootState) => state.svgList.list);
+    const listSize = list.length;
 
     const mouseIsDown = useSelector((state: RootState) => state.eventListener.mouseIsDown);
     
     const firstPointCoordinates = useSelector((state: RootState) => state.svgList.firstPointCoordinates);
     const { x0, y0 } = firstPointCoordinates;
+
+    const selectedOutline = useSelector((state: RootState) => state.svgList.selectedOutline);
+    const selectedElement = useSelector((state: RootState) => state.svgList.selectedElement);
+    const selectedNode = useSelector((state: RootState) => state.svgList.selectedNode);
 
     //the bottom 4 lines are for the path creation tool
     const pathId = useSelector((state: RootState) => state.pathCreation.pathId);
@@ -333,6 +343,43 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (e.nativeEvent.button !== 2) dispatch(setNodeCount(nodeCount + 1));
                 },
             };
+        case "resize node":
+            return {
+                handleMouseDown: (e: React.MouseEvent) => {
+                    dispatch(setMouseIsDown(true));
+
+                    let { x, y } = getRelativePosition(e);
+                    
+                    const nodeClicked = useNodeClicked(list, x, y);
+                    if (!nodeClicked) return;
+
+                    dispatch(setSelectedNode(nodeClicked));
+                },
+                handleMouseMove: (e: React.MouseEvent) => {
+                    if (!mouseIsDown) return;
+
+                    let { x, y } = getRelativePosition(e);
+
+                    const targetElement = list.find(element => element.id === selectedElement);
+                    
+                    const resizedElement = resizeElement(targetElement, selectedNode, x, y);
+
+                    dispatch(removeElement(selectedElement));
+                    dispatch(addElement(resizedElement));
+
+                    dispatch(removeElement(selectedOutline.id));
+                    const center = getElementCenter(resizedElement);
+                    const { width, height } = getElementDimensions(resizedElement);
+                    const newSelectedOutline = makeSelectedOutline(center, width, height);
+                    dispatch(addElement(newSelectedOutline));
+                    dispatch(setSelectedOutline(newSelectedOutline));
+
+                },
+                handleMouseUp: (e: React.MouseEvent) => {
+                    dispatch(setMouseIsDown(false));
+                    dispatch(setSelectedNode(0));
+                },
+        }
         default:
             return {
                 handleMouseDown: () => {
