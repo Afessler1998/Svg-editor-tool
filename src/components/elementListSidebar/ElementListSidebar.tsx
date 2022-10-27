@@ -25,11 +25,12 @@ const elementListSidebar = () => {
                 key={element.id}
                 onClick={() => {
                     dispatch(removeElement("selectedOutline"));
-                    selectedTool === "resize node" ? dispatch(setSelectedTool("")) : dispatch(setSelectedTool("resize node"));
+                    dispatch(setSelectedTool("resize node"));
 
                     if (selectedElement === element.id) {
                         dispatch(setSelectedElement(null));
                         dispatch(setSelectedOutline(null));
+                        dispatch(setSelectedTool(""));
                         return;
                     }
 
