@@ -18,6 +18,7 @@ export const svgListSlice = createSlice({
     },
     addElement(state, action: PayloadAction<any>) {
         state.list = [...state.list, action.payload];
+        state.list.sort((a, b) => a.id - b.id);
     },
     removeElement(state, action: PayloadAction<string>) {
         state.list = state.list.filter((element) => element.id !== action.payload);

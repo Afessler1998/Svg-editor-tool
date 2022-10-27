@@ -357,6 +357,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
                     if (!mouseIsDown) return;
+                    if (!selectedNode) return;
 
                     let { x, y } = getRelativePosition(e);
 
