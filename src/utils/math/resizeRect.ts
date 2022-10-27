@@ -3,8 +3,8 @@ import { makeRect } from "../makeSvgElements/makeRect";
 export default function resizeRect(rect: any, point: number, x: number, y: number) {
 
     let resizedRect = rect;
-    let width;
-    let height;
+    let width = 0;
+    let height = 0;
 
     switch(point) {
         case 1:
