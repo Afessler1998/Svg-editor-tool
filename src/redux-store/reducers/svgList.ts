@@ -6,7 +6,7 @@ const initialState: svgList = {
   list: [],
   selectedElement: null,
   selectedOutline: null,
-  selectedNode: 0,
+  selectedNode: null,
 }
 
 export const svgListSlice = createSlice({
@@ -29,7 +29,7 @@ export const svgListSlice = createSlice({
     setSelectedOutline(state, action: PayloadAction<any>) {
         state.selectedOutline = action.payload;
     },
-    setSelectedNode(state, action: PayloadAction<number>) {
+    setSelectedNode(state, action: PayloadAction<any>) {
         state.selectedNode = action.payload;
     },
   },

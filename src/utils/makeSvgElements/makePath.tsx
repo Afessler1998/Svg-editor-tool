@@ -1,4 +1,4 @@
-import Vector2 from "../math/vector2";
+import Vector2 from "../../types/vector2";
 import { PathNode, getPathNodeSvg } from "./makePathNode";
 import { CurveControlNode, getCurveControlNodeSvg } from "./makePathCurveControl";
 
@@ -14,6 +14,7 @@ export interface Path{
     curveControlNodes: Array<CurveControlNode>,
     stroke: string,
     fill: string,
+    transform: string,
     id: string,
 }
 
@@ -50,7 +51,7 @@ function deriveDFromNodes(pathNodes: Array<PathNode>, curveControlNodes: Array<C
     return d;
 }
 
-export function makePath(pathNodes: Array<PathNode>, curveControlNodes: Array<CurveControlNode>, stroke: string, fill: string, id: string): Path {
+export function makePath(pathNodes: Array<PathNode>, curveControlNodes: Array<CurveControlNode>, stroke: string, fill: string, transform: string, id: string): Path {
     
     const d = deriveDFromNodes(pathNodes, curveControlNodes);
 
@@ -61,20 +62,21 @@ export function makePath(pathNodes: Array<PathNode>, curveControlNodes: Array<Cu
         curveControlNodes,
         stroke,
         fill,
+        transform,
         id,
     }
 }
 
 export function getPathSvg(path: Path, selected: boolean) {
-    const { d, stroke, fill, id, pathNodes, curveControlNodes } = path;
+    const { d, stroke, fill, transform, id, pathNodes, curveControlNodes } = path;
 
     if (selected) {
         return <g key={id}>
-            <path d={d} stroke={stroke} fill={fill} id={id} />
+            <path d={d} stroke={stroke} fill={fill} transform={transform} id={id} />
             {curveControlNodes.map(node => getCurveControlNodeSvg(node))}
             {pathNodes.map(node => getPathNodeSvg(node))}
         </g>
     } else {
-        return <path d={d} stroke={stroke} fill={fill} id={id} key={id} />
+        return <path d={d} stroke={stroke} fill={fill} id={id} transform={transform} key={id} />
     }
 }

@@ -1,12 +1,12 @@
-import { makeEllipse } from "../makeSvgElements/makeEllipse";
+import { makeEllipse } from "../../makeSvgElements/makeEllipse";
 
-export default function resizeEllipse(ellipse: any, point: number, x: number, y: number) {
+export default function resizeEllipse(ellipse: any, node: any, x: number, y: number) {
 
     let resizedEllipse = ellipse;
     const rx = ellipse.cx - x;
     const ry = ellipse.cy - y;
 
-    switch(point) {
+    switch(node.number) {
         case 1:
             if (rx < 0) break;
             if (ry < 0) break;

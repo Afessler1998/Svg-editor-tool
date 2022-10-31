@@ -5,10 +5,11 @@ export interface Ellipse{
     cx: number,
     cy: number,
     fill: string,
+    transform: string,
     id: string,
 }
 
-export function makeEllipse(rx: number, ry: number, cx: number, cy: number, fill: string, id: string): Ellipse {
+export function makeEllipse(rx: number, ry: number, cx: number, cy: number, fill: string, transform: string, id: string): Ellipse {
     return {
         type: "ellipse",
         rx,
@@ -16,11 +17,12 @@ export function makeEllipse(rx: number, ry: number, cx: number, cy: number, fill
         cx,
         cy,
         fill,
+        transform,
         id
     }
 }
 
 export function getEllipseSvg(ellipse: Ellipse) {
-    const { rx, ry, cx, cy, fill, id } = ellipse;
-    return <ellipse rx={rx} ry={ry} cx={cx} cy={cy} fill={fill} id={id} key={id} />
+    const { rx, ry, cx, cy, fill, transform, id } = ellipse;
+    return <ellipse rx={rx} ry={ry} cx={cx} cy={cy} fill={fill} transform={transform} id={id} key={id} />
 }

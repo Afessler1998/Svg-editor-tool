@@ -1,9 +1,9 @@
-import Vector2 from "../math/vector2";
+import Vector2 from "../../types/vector2";
 
 interface resizeNode {
     x: number,
     y: number,
-    point: number,
+    number: number,
 }
 
 export interface SelectedOutline{
@@ -23,10 +23,10 @@ export function makeSelectedOutline(center: Vector2, width: number, height: numb
         width,
         height,
         points: [
-            {x: center.x - width/2, y: center.y + height/2, point: 4},
-            {x: center.x + width/2, y: center.y + height/2, point: 3},
-            {x: center.x + width/2, y: center.y - height/2, point: 2},
-            {x: center.x - width/2, y: center.y - height/2, point: 1},
+            {x: center.x - width/2, y: center.y + height/2, number: 4},
+            {x: center.x + width/2, y: center.y + height/2, number: 3},
+            {x: center.x + width/2, y: center.y - height/2, number: 2},
+            {x: center.x - width/2, y: center.y - height/2, number: 1},
         ],
     }
 }

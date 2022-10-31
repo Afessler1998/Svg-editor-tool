@@ -3,5 +3,5 @@ export default interface svgList {
     list: Array<any>,
     selectedElement: any,
     selectedOutline: any,
-    selectedNode: number,
+    selectedNode: any,
 }

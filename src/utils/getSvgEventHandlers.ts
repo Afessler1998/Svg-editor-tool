@@ -14,13 +14,14 @@ import { makePathNode } from "./makeSvgElements/makePathNode";
 import { makeCurveControlNode } from "./makeSvgElements/makePathCurveControl";
 import { calcPolygonVertices } from "./math/calcPolygonVertices";
 import { calcStarVertices } from "./math/calcStarVertices";
-import useNodeClicked from "./math/useNodeClicked";
+import useNodeClicked from "./math/resizeElements/useNodeClicked";
 import calcHypotenuse from "./math/calcHypotenuse";
 import getRelativePosition from "./getRelativePosition";
-import resizeElement from "./math/resizeElement";
+import resizeElement from "./math/resizeElements/resizeElement";
 import getElementCenter from "./math/getElementCenter";
 import getElementDimensions from "./math/getElementDimensions";
 import { makeSelectedOutline } from "./makeSvgElements/makeSelectedOutline";
+import getTransformString from "./getTransformString";
 
 
 export default function getSvgEventHandlers(selectedTool: string) {
@@ -68,7 +69,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (width < 0) xPosition = x;
                     if (height < 0) yPosition = y;
 
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", `${x0}${y0}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", transform, `${x0}${y0}`);
                     dispatch(addElement(rect));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -85,7 +87,9 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (width < 0) xPosition = x;
                     if (height < 0) yPosition = y;
 
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", `${listSize}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    console.log(transform);
+                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", transform, `${listSize}`);
                     dispatch(addElement(rect));
                 }
             };
@@ -106,7 +110,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const width = Math.abs(x - x0);
                     const height = Math.abs(y - y0);
 
-                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", `${x0}${y0}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", transform, `${x0}${y0}`);
                     dispatch(addElement(ellipse));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -119,7 +124,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const width = Math.abs(x - x0);
                     const height = Math.abs(y - y0);
 
-                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", `${listSize}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", transform, `${listSize}`);
                     dispatch(addElement(ellipse));
                 }
             };
@@ -141,7 +147,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
 
                     const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
-                    const polygon = makePolygon(5, polygonVertices, "#89CFF0", `${x0}${y0}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const polygon = makePolygon(5, polygonVertices, "#89CFF0", transform, `${x0}${y0}`);
 
                     dispatch(addElement(polygon));
                 },
@@ -156,7 +163,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
 
                     const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
-                    const polygon = makePolygon(5, polygonVertices, "#89CFF0", `${listSize}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const polygon = makePolygon(5, polygonVertices, "#89CFF0", transform, `${listSize}`);
 
                     dispatch(addElement(polygon));
                 }
@@ -178,7 +186,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
     
                     const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
-                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", `${x0}${y0}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", transform, `${x0}${y0}`);
     
                     dispatch(addElement(starPolygon));
                 },
@@ -192,7 +201,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const rotation = Math.atan2(y - y0, x - x0);
     
                     const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
-                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", `${listSize}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", transform, `${listSize}`);
     
                     dispatch(addElement(starPolygon));
                 }
@@ -210,7 +220,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     let { x, y } = getRelativePosition(e);
                     dispatch(removeElement(`${x0}${y0}`));
 
-                    const line = makeLine(x0, y0, x, y, "#000", `${x0}${y0}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const line = makeLine(x0, y0, x, y, "#000", transform, `${x0}${y0}`);
                     dispatch(addElement(line));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -219,7 +230,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     let { x, y } = getRelativePosition(e);
                     dispatch(removeElement(`${x0}${y0}`));
 
-                    const line = makeLine(x0, y0, x, y, "#000", `${listSize}`);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const line = makeLine(x0, y0, x, y, "#000", transform, `${listSize}`);
                     dispatch(addElement(line));
                 },
             };
@@ -232,7 +244,9 @@ export default function getSvgEventHandlers(selectedTool: string) {
                         if (pathId === "") return;
                         const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount);
                         dispatch(removeElement(pathId));
-                        const path = makePath(filteredPathNodes, curveControlNodes, "black", "none", `${listSize}`);
+                        dispatch(setSelectedElement(""));
+                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                        const path = makePath(filteredPathNodes, curveControlNodes, "black", "none", transform, `${listSize}`);
                         dispatch(addElement(path));
                         dispatch(setPathId(""));
                         dispatch(setPathNodes([]));
@@ -268,7 +282,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     dispatch(setPathNodes([...filteredPathNodes, pathNode]));
 
                     dispatch(removeElement(pathId || id));
-                    const path = makePath(pathNodes, curveControlNodes, "black", "none", pathId || id);
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const path = makePath(pathNodes, curveControlNodes, "black", "none", transform, pathId || id);
 
                     dispatch(setSelectedElement(pathId || id));
 
@@ -310,7 +325,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                         dispatch(setCurveControlNodes([...filteredCurveControlNodes, curveControlNode]));
 
                         dispatch(removeElement(pathId));
-                        const path = makePath(pathNodes, curveControlNodes, "black", "none", pathId);
+                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                        const path = makePath(pathNodes, curveControlNodes, "black", "none", transform, pathId);
                         dispatch(addElement(path));
 
                     } else if (pathNodes.length > 0) {
@@ -334,7 +350,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                         }
 
                         dispatch(removeElement(pathId));
-                        const path = makePath(pathNodes, curveControlNodes, "black", "none", pathId);
+                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                        const path = makePath(pathNodes, curveControlNodes, "black", "none", transform, pathId);
                         dispatch(addElement(path));
                     }
                 },
@@ -353,6 +370,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const nodeClicked = useNodeClicked(list, x, y);
                     if (!nodeClicked) return;
 
+                    dispatch(setFirstPointCoordinates({ x0: nodeClicked.x, y0: nodeClicked.y }));
                     dispatch(setSelectedNode(nodeClicked));
                 },
                 handleMouseMove: (e: React.MouseEvent) => {
@@ -363,7 +381,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
 
                     const targetElement = list.find(element => element.id === selectedElement);
                     
-                    const resizedElement = resizeElement(targetElement, selectedNode, x, y);
+                    const resizedElement = resizeElement(targetElement, selectedNode, x, y, x0, y0);
 
                     dispatch(removeElement(selectedElement));
                     dispatch(addElement(resizedElement));
@@ -374,11 +392,11 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const newSelectedOutline = makeSelectedOutline(center, width, height);
                     dispatch(addElement(newSelectedOutline));
                     dispatch(setSelectedOutline(newSelectedOutline));
-
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
                     dispatch(setMouseIsDown(false));
-                    dispatch(setSelectedNode(0));
+                    dispatch(setSelectedNode(null));
+                    dispatch(setFirstPointCoordinates({ x0: 0, y0: 0 }));
                 },
         }
         default:

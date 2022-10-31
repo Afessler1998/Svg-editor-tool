@@ -5,7 +5,7 @@ export interface selectTool {
 }
 
 const initialState: selectTool = {
-  selectedTool: "resize node"
+  selectedTool: "ellipse"
 }
 
 export const selectToolSlice = createSlice({

@@ -36,6 +36,8 @@ const elementListSidebar = () => {
 
                     dispatch(setSelectedElement(element.id));
 
+                    if (element.type === "path") return;
+
                     const targetElement = list.find((targetElement) => targetElement.id === element.id);
                     const center = getElementCenter(targetElement);
                     const { width, height } = getElementDimensions(targetElement);

@@ -5,10 +5,11 @@ export interface Rect{
     x: number,
     y: number,
     fill: string,
+    transform: string,
     id: string,
 }
 
-export function makeRect(width: number, height: number, x: number, y: number, fill: string, id: string): Rect {
+export function makeRect(width: number, height: number, x: number, y: number, fill: string, transform: string, id: string): Rect {
     return {
         type: "rect",
         width,
@@ -16,11 +17,12 @@ export function makeRect(width: number, height: number, x: number, y: number, fi
         x,
         y,
         fill,
+        transform,
         id
     }
 }
 
 export function getRectSvg(rect: Rect) {
-    const { width, height, x, y, fill, id } = rect;
-    return <rect width={width} height={height} x={x} y={y} fill={fill} id={id} key={id} />
+    const { width, height, x, y, fill, transform, id } = rect;
+    return <rect width={width} height={height} x={x} y={y} fill={fill} transform={transform} id={id} key={id} />
 }

@@ -1,12 +1,12 @@
-import { makeRect } from "../makeSvgElements/makeRect";
+import { makeRect } from "../../makeSvgElements/makeRect";
 
-export default function resizeRect(rect: any, point: number, x: number, y: number) {
+export default function resizeRect(rect: any, node: any, x: number, y: number) {
 
     let resizedRect = rect;
     let width = 0;
     let height = 0;
 
-    switch(point) {
+    switch(node.number) {
         case 1:
             width = rect.x - x + rect.width;
             height = rect.y - y + rect.height;

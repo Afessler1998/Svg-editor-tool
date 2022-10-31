@@ -1,4 +1,4 @@
-import Vector2 from "./vector2";
+import Vector2 from "../../types/vector2";
 
 export default function calcPolygonCenter(vertices: Array<Vector2>) {
     let minX = Infinity;
