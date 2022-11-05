@@ -69,8 +69,11 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (width < 0) xPosition = x;
                     if (height < 0) yPosition = y;
 
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", transform, `${x0}${y0}`);
+                    const xCenter = 0 + Math.abs(width) / 2;
+                    const yCenter = 0 + Math.abs(height) / 2;
+
+                    const transform = getTransformString({translateX: xPosition, translateY: yPosition, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: xCenter, rotateY: yCenter});
+                    const rect = makeRect(Math.abs(width), Math.abs(height), 0, 0, "#89CFF0", transform, `${x0}${y0}`);
                     dispatch(addElement(rect));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -87,9 +90,11 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     if (width < 0) xPosition = x;
                     if (height < 0) yPosition = y;
 
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
-                    console.log(transform);
-                    const rect = makeRect(Math.abs(width), Math.abs(height), xPosition, yPosition, "#89CFF0", transform, `${listSize}`);
+                    const xCenter = 0 + Math.abs(width) / 2;
+                    const yCenter = 0 + Math.abs(height) / 2;
+
+                    const transform = getTransformString({translateX: xPosition, translateY: yPosition, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: xCenter, rotateY: yCenter});
+                    const rect = makeRect(Math.abs(width), Math.abs(height), 0, 0, "#89CFF0", transform, `${listSize}`);
                     dispatch(addElement(rect));
                 }
             };
@@ -110,8 +115,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const width = Math.abs(x - x0);
                     const height = Math.abs(y - y0);
 
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
-                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", transform, `${x0}${y0}`);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const ellipse = makeEllipse(width, height, 0, 0, "#89CFF0", transform, `${x0}${y0}`);
                     dispatch(addElement(ellipse));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -124,8 +129,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const width = Math.abs(x - x0);
                     const height = Math.abs(y - y0);
 
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
-                    const ellipse = makeEllipse(width, height, x0, y0, "#89CFF0", transform, `${listSize}`);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const ellipse = makeEllipse(width, height, 0, 0, "#89CFF0", transform, `${listSize}`);
                     dispatch(addElement(ellipse));
                 }
             };
@@ -146,8 +151,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
 
-                    const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const polygonVertices = calcPolygonVertices(5, radius, {x: 0, y: 0}, rotation);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                     const polygon = makePolygon(5, polygonVertices, "#89CFF0", transform, `${x0}${y0}`);
 
                     dispatch(addElement(polygon));
@@ -162,8 +167,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
 
-                    const polygonVertices = calcPolygonVertices(5, radius, {x: x0, y: y0}, rotation);
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const polygonVertices = calcPolygonVertices(5, radius, {x: 0, y: 0}, rotation);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                     const polygon = makePolygon(5, polygonVertices, "#89CFF0", transform, `${listSize}`);
 
                     dispatch(addElement(polygon));
@@ -185,8 +190,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
     
-                    const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const polygonVertices = calcStarVertices(5, radius, {x: 0, y: 0}, rotation, 0.4);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                     const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", transform, `${x0}${y0}`);
     
                     dispatch(addElement(starPolygon));
@@ -200,8 +205,8 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
     
-                    const polygonVertices = calcStarVertices(5, radius, {x: x0, y: y0}, rotation, 0.4);
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const polygonVertices = calcStarVertices(5, radius, {x: 0, y: 0}, rotation, 0.4);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                     const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", transform, `${listSize}`);
     
                     dispatch(addElement(starPolygon));
@@ -220,8 +225,16 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     let { x, y } = getRelativePosition(e);
                     dispatch(removeElement(`${x0}${y0}`));
 
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
-                    const line = makeLine(x0, y0, x, y, "#000", transform, `${x0}${y0}`);
+                    const lineXCenter = (x0 + x)/2;
+                    const lineYCenter = (y0 + y)/2;
+
+                    const lineX1 = x0 - lineXCenter;
+                    const lineY1 = y0 - lineYCenter;
+                    const lineX2 = x - lineXCenter;
+                    const lineY2 = y - lineYCenter;
+                    
+                    const transform = getTransformString({translateX: lineXCenter, translateY: lineYCenter, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const line = makeLine(lineX1, lineY1, lineX2, lineY2, "#000", transform, `${x0}${y0}`);
                     dispatch(addElement(line));
                 },
                 handleMouseUp: (e: React.MouseEvent) => {
@@ -230,8 +243,16 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     let { x, y } = getRelativePosition(e);
                     dispatch(removeElement(`${x0}${y0}`));
 
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
-                    const line = makeLine(x0, y0, x, y, "#000", transform, `${listSize}`);
+                    const lineXCenter = (x0 + x)/2;
+                    const lineYCenter = (y0 + y)/2;
+
+                    const lineX1 = x0 - lineXCenter;
+                    const lineY1 = y0 - lineYCenter;
+                    const lineX2 = x - lineXCenter;
+                    const lineY2 = y - lineYCenter;
+
+                    const transform = getTransformString({translateX: lineXCenter, translateY: lineYCenter, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const line = makeLine(lineX1, lineY1, lineX2, lineY2, "#000", transform, `${listSize}`);
                     dispatch(addElement(line));
                 },
             };
@@ -245,7 +266,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                         const filteredPathNodes = pathNodes.filter(node => node.nodeNumber !== nodeCount);
                         dispatch(removeElement(pathId));
                         dispatch(setSelectedElement(""));
-                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                         const path = makePath(filteredPathNodes, curveControlNodes, "black", "none", transform, `${listSize}`);
                         dispatch(addElement(path));
                         dispatch(setPathId(""));
@@ -282,7 +303,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                     dispatch(setPathNodes([...filteredPathNodes, pathNode]));
 
                     dispatch(removeElement(pathId || id));
-                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                    const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                     const path = makePath(pathNodes, curveControlNodes, "black", "none", transform, pathId || id);
 
                     dispatch(setSelectedElement(pathId || id));
@@ -325,7 +346,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                         dispatch(setCurveControlNodes([...filteredCurveControlNodes, curveControlNode]));
 
                         dispatch(removeElement(pathId));
-                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                         const path = makePath(pathNodes, curveControlNodes, "black", "none", transform, pathId);
                         dispatch(addElement(path));
 
@@ -350,7 +371,7 @@ export default function getSvgEventHandlers(selectedTool: string) {
                         }
 
                         dispatch(removeElement(pathId));
-                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0});
+                        const transform = getTransformString({translateX: 0, translateY: 0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
                         const path = makePath(pathNodes, curveControlNodes, "black", "none", transform, pathId);
                         dispatch(addElement(path));
                     }

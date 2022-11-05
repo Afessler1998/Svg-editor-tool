@@ -6,4 +6,6 @@ export default interface transforms {
     scaleX: number,
     scaleY: number,
     rotate: number,
+    rotateX: number,
+    rotateY: number,
 }

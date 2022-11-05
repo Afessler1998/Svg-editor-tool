@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import style from "../../styles/elementControlSidebar.module.css";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addElement, removeElement } from '../../redux-store/reducers/svgList';
 import parseTransformString from '../../utils/parseTransformString';
+import transformElement from '../../utils/transformElement';
 
 const TransformationControls = () => {
+
+    const dispatch = useDispatch();
 
     const svgList = useSelector((state: any) => state.svgList.list);
     const selectedElementId = useSelector((state: any) => state.svgList.selectedElement);
@@ -29,14 +33,25 @@ const TransformationControls = () => {
                     <div className={style.controlInputContainer}>
                         <input className={style.controlInput}
                         value={`${translateXText}`}
-                        onChange={(e) => setTranslateX(e.target.value)}
-                        />
+                        onChange={(e) => {
+                            setTranslateX(e.target.value);
+                            if (isNaN(parseFloat(e.target.value))) return;
+                            const transformedElement = transformElement(selectedElement, 'translateX', parseFloat(e.target.value));
+                            dispatch(removeElement(selectedElementId));
+                            dispatch(addElement(transformedElement));
+                        }}/>
                         X
                     </div>
                     <div className={style.controlInputContainer}>
                         <input className={style.controlInput}
                         value={`${translateYText}`}
-                        onChange={(e) => setTranslateY(e.target.value)}
+                        onChange={(e) => {
+                            setTranslateY(e.target.value);
+                            if (isNaN(parseFloat(e.target.value))) return;
+                            const transformedElement = transformElement(selectedElement, 'translateY', parseFloat(e.target.value));
+                            dispatch(removeElement(selectedElementId));
+                            dispatch(addElement(transformedElement));
+                        }}
                         />
                         Y
                     </div>
@@ -46,14 +61,26 @@ const TransformationControls = () => {
                     <div className={style.controlInputContainer}>
                         <input className={style.controlInput}
                         value={`${scaleXText}`}
-                        onChange={(e) => setScaleX(e.target.value)}
+                        onChange={(e) => {
+                            setScaleX(e.target.value);
+                            if (isNaN(parseFloat(e.target.value))) return;
+                            const transformedElement = transformElement(selectedElement, 'scaleX', parseFloat(e.target.value));
+                            dispatch(removeElement(selectedElementId));
+                            dispatch(addElement(transformedElement));
+                        }}
                         />
                         X
                     </div>
                     <div className={style.controlInputContainer}>
                         <input className={style.controlInput}
                         value={`${scaleYText}`}
-                        onChange={(e) => setScaleY(e.target.value)}
+                        onChange={(e) => {
+                            setScaleY(e.target.value);
+                            if (isNaN(parseFloat(e.target.value))) return;
+                            const transformedElement = transformElement(selectedElement, 'scaleY', parseFloat(e.target.value));
+                            dispatch(removeElement(selectedElementId));
+                            dispatch(addElement(transformedElement));
+                        }}
                         />
                         Y
                     </div>
@@ -63,14 +90,26 @@ const TransformationControls = () => {
                     <div className={style.controlInputContainer}>
                         <input className={style.controlInput}
                         value={`${skewXText}`}
-                        onChange={(e) => setSkewX(e.target.value)}
+                        onChange={(e) => {
+                            setSkewX(e.target.value);
+                            if (isNaN(parseFloat(e.target.value))) return;
+                            const transformedElement = transformElement(selectedElement, 'skewX', parseFloat(e.target.value));
+                            dispatch(removeElement(selectedElementId));
+                            dispatch(addElement(transformedElement));
+                        }}
                         />
                         X
                     </div>
                     <div className={style.controlInputContainer}>
                         <input className={style.controlInput}
                         value={`${skewYText}`}
-                        onChange={(e) => setSkewY(e.target.value)}
+                        onChange={(e) => {
+                            setSkewY(e.target.value);
+                            if (isNaN(parseFloat(e.target.value))) return;
+                            const transformedElement = transformElement(selectedElement, 'skewY', parseFloat(e.target.value));
+                            dispatch(removeElement(selectedElementId));
+                            dispatch(addElement(transformedElement));
+                        }}
                         />
                         Y
                     </div>
@@ -80,7 +119,13 @@ const TransformationControls = () => {
                     <div className={style.controlInputContainer}>
                         <input className={style.controlInput}
                         value={`${rotateText}`}
-                        onChange={(e) => setRotate(e.target.value)}
+                        onChange={(e) => {
+                            setRotate(e.target.value);
+                            if (isNaN(parseFloat(e.target.value))) return;
+                            const transformedElement = transformElement(selectedElement, 'rotate', parseFloat(e.target.value));
+                            dispatch(removeElement(selectedElementId));
+                            dispatch(addElement(transformedElement));
+                        }}
                         />
                         Deg
                     </div>
