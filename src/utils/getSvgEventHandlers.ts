@@ -150,9 +150,10 @@ export default function getSvgEventHandlers(selectedTool: string) {
 
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
+                    const degrees = Math.round(rotation * 180 / Math.PI);
 
-                    const polygonVertices = calcPolygonVertices(5, radius, {x: 0, y: 0}, rotation);
-                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const polygonVertices = calcPolygonVertices(5, radius, {x: 0, y: 0});
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: degrees, rotateX: 0, rotateY: 0});
                     const polygon = makePolygon(5, polygonVertices, "#89CFF0", transform, `${x0}${y0}`);
 
                     dispatch(addElement(polygon));
@@ -166,9 +167,10 @@ export default function getSvgEventHandlers(selectedTool: string) {
 
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
+                    const degrees = Math.round(rotation * 180 / Math.PI);
 
-                    const polygonVertices = calcPolygonVertices(5, radius, {x: 0, y: 0}, rotation);
-                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const polygonVertices = calcPolygonVertices(5, radius, {x: 0, y: 0});
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: degrees, rotateX: 0, rotateY: 0});
                     const polygon = makePolygon(5, polygonVertices, "#89CFF0", transform, `${listSize}`);
 
                     dispatch(addElement(polygon));
@@ -189,9 +191,10 @@ export default function getSvgEventHandlers(selectedTool: string) {
     
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
+                    const degrees = Math.round(rotation * 180 / Math.PI);
     
-                    const polygonVertices = calcStarVertices(5, radius, {x: 0, y: 0}, rotation, 0.4);
-                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const polygonVertices = calcStarVertices(5, radius, {x: 0, y: 0}, 0.4);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: degrees, rotateX: 0, rotateY: 0});
                     const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", transform, `${x0}${y0}`);
     
                     dispatch(addElement(starPolygon));
@@ -204,9 +207,10 @@ export default function getSvgEventHandlers(selectedTool: string) {
     
                     const radius = calcHypotenuse(x - x0, y - y0);
                     const rotation = Math.atan2(y - y0, x - x0);
+                    const degrees = Math.round(rotation * 180 / Math.PI);
     
-                    const polygonVertices = calcStarVertices(5, radius, {x: 0, y: 0}, rotation, 0.4);
-                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: 0, rotateX: 0, rotateY: 0});
+                    const polygonVertices = calcStarVertices(5, radius, {x: 0, y: 0}, 0.4);
+                    const transform = getTransformString({translateX: x0, translateY: y0, skewX: 0, skewY: 0, scaleX: 1, scaleY: 1, rotate: degrees, rotateX: 0, rotateY: 0});
                     const starPolygon = makeStarPolygon(5, polygonVertices, radius, "#89CFF0", transform, `${listSize}`);
     
                     dispatch(addElement(starPolygon));

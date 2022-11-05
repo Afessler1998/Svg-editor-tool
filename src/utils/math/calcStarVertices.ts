@@ -1,9 +1,9 @@
-import Vector2 from "./vector2";
+import Vector2 from "../../types/vector2";
 
-export function calcStarVertices(points: number, radius: number, center: Vector2, rotation: number, innerRadiusRatio: number): Array<Vector2> {
+export function calcStarVertices(points: number, radius: number, center: Vector2, innerRadiusRatio: number): Array<Vector2> {
     const vertices: Vector2[] = [];
     for (let i = 0; i < points; i += 0.5) {
-        const angle = (i / points) * Math.PI * 2 + rotation;
+        const angle = (i / points) * Math.PI * 2;
         let x = radius * Math.cos(angle) + center.x;
         let y = radius * Math.sin(angle) + center.y;
         if (!Number.isInteger(i)) {
